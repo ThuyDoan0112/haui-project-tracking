@@ -1,5 +1,9 @@
 <script setup lang="ts">
 const title = 'HaUI Project Tracking'
+
+const authStore = useAuthStore()
+const { user } = storeToRefs(authStore)
+
 const links = [
   {
     id: 'home',
@@ -46,6 +50,12 @@ const groups = [
         </template>
 
         <UDashboardSidebarLinks class="flex-1" :links="links" />
+
+        <UDivider class="sticky bottom-0" />
+
+        <template #footer>
+          <UserDropdown v-if="user" :user="user" />
+        </template>
       </UDashboardSidebar>
     </UDashboardPanel>
 
