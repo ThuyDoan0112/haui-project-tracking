@@ -1,7 +1,17 @@
 <script setup lang="ts">
 const title = 'HaUI Project Tracking'
-
-const links = []
+const links = [
+  {
+    id: 'home',
+    label: 'Home',
+    icon: 'i-heroicons-home',
+    to: '/',
+    tooltip: {
+      text: 'Home',
+      shortcuts: ['G', 'H'],
+    },
+  },
+]
 
 const groups = [
   {
@@ -29,15 +39,13 @@ const groups = [
           </h1>
         </template>
       </UDashboardNavbar>
-
       <UDivider class="sticky top-0" />
-
       <UDashboardSidebar>
         <template #header>
           <UDashboardSearchButton />
         </template>
 
-        <UDashboardSidebarLinks :links="links" />
+        <UDashboardSidebarLinks class="flex-1" :links="links" />
       </UDashboardSidebar>
     </UDashboardPanel>
 
