@@ -54,7 +54,7 @@ const groups = [
         <UDivider class="sticky bottom-0" />
 
         <template #footer>
-          <UserDropdown v-if="user" :user="user" />
+          <UserDropdown v-if="user" :user="user" @logout="authStore.logout" />
         </template>
       </UDashboardSidebar>
     </UDashboardPanel>

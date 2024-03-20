@@ -31,9 +31,19 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = data.value
   }
 
+  const logout = async () => {
+    const { error } = await useFetch('/api/auth/logout')
+
+    if (!error.value) {
+      user.value = undefined
+      return navigateTo('/login')
+    }
+  }
+
   return {
     user,
     login,
+    logout,
     getUser,
   }
 })

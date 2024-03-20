@@ -5,12 +5,25 @@ defineProps<{
   user: User
 }>()
 
+const emit = defineEmits<{
+  logout: []
+}>()
+
 const items = computed(() => [
   [
     {
       slot: 'account',
       label: '',
       disabled: true,
+    },
+  ],
+  [
+    {
+      label: 'Sign out',
+      icon: 'i-heroicons-arrow-left-on-rectangle',
+      click() {
+        emit('logout')
+      },
     },
   ],
 ])
