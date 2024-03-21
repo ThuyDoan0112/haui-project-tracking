@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { CreateUserDto } from '~/types'
+
 const { users, isLoading, columns, handleFetchUsers } = useUsersTable()
 
 await handleFetchUsers()
@@ -45,11 +47,56 @@ function useUsersTable() {
     handleFetchUsers,
   }
 }
+
+const {
+  isVisible: isVisibleCreateUserModal,
+  title: createUserModalTitle,
+  description: createUserModalDescription,
+  openModal: openCreateUserModal,
+  closeModal: closeCreateUserModal,
+  handleCreateUser,
+} = useCreateUserModal()
+
+function useCreateUserModal() {
+  const title = 'New user'
+  const description = 'Add a new user to your database'
+  const isVisible = ref(false)
+
+  const openModal = () => {
+    isVisible.value = true
+  }
+
+  const closeModal = () => {
+    isVisible.value = false
+  }
+
+  const handleCreateUser = async (createUserDto: CreateUserDto) => {
+    console.log(createUserDto)
+  }
+
+  return {
+    title,
+    description,
+    isVisible,
+    openModal,
+    closeModal,
+    handleCreateUser,
+  }
+}
 </script>
 
 <template>
   <UDashboardPanel grow>
-    <UDashboardNavbar title="Users" :badge="users.length" />
+    <UDashboardNavbar title="Users" :badge="users.length">
+      <template #right>
+        <UButton
+          label="New user"
+          trailing-icon="i-heroicons-plus"
+          color="gray"
+          @click="openCreateUserModal"
+        />
+      </template>
+    </UDashboardNavbar>
 
     <UTable
       :rows="users"
@@ -78,5 +125,14 @@ function useUsersTable() {
         />
       </template>
     </UTable>
+
+    <UDashboardModal
+      v-model="isVisibleCreateUserModal"
+      :title="createUserModalTitle"
+      :description="createUserModalDescription"
+      :ui="{ width: 'sm:max-w-md' }"
+    >
+      <UsersForm @close="closeCreateUserModal" @submit="handleCreateUser" />
+    </UDashboardModal>
   </UDashboardPanel>
 </template>
