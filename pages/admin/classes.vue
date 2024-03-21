@@ -101,7 +101,7 @@ function useClassesTable() {
       <template #status-data="{ row }">
         <UBadge
           :label="row.status"
-          :color="row.status === 'admin' ? 'green' : 'orange'"
+          :color="row.status === 'active' ? 'green' : 'orange'"
           variant="subtle"
           class="capitalize"
         />
