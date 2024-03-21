@@ -2,31 +2,56 @@
 const title = 'HaUI Project Tracking'
 
 const authStore = useAuthStore()
-const { user } = storeToRefs(authStore)
+const { user, isAdmin } = storeToRefs(authStore)
 
-const links = [
-  {
-    id: 'home',
-    label: 'Home',
-    icon: 'i-heroicons-home',
-    to: '/',
-    tooltip: {
-      text: 'Home',
-      shortcuts: ['G', 'H'],
+const links = computed(() => {
+  return [
+    {
+      id: 'home',
+      label: 'Home',
+      icon: 'i-heroicons-home',
+      to: '/',
+      tooltip: {
+        text: 'Home',
+        shortcuts: ['G', 'H'],
+      },
     },
-  },
-]
+    ...(isAdmin.value
+      ? [
+          {
+            id: 'admin',
+            label: 'Dashboard',
+            to: '/admin',
+            icon: 'i-heroicons-cog-8-tooth',
+            children: [
+              {
+                label: 'Users',
+                to: '/admin/users',
+                exact: true,
+              },
+            ],
+            tooltip: {
+              text: 'Dashboard',
+              shortcuts: ['G', 'D'],
+            },
+          },
+        ]
+      : []),
+  ]
+})
 
-const groups = [
-  {
-    key: 'links',
-    label: 'Go to',
-    commands: links.map(link => ({
-      ...link,
-      shortcuts: link.tooltip?.shortcuts,
-    })),
-  },
-]
+const groups = computed(() => {
+  return [
+    {
+      key: 'links',
+      label: 'Go to',
+      commands: links.value.map(link => ({
+        ...link,
+        shortcuts: link.tooltip?.shortcuts,
+      })),
+    },
+  ]
+})
 </script>
 
 <template>
