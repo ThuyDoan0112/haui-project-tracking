@@ -13,9 +13,6 @@ export interface User {
   studentCode?: string
 }
 
-export type CreateUserDto = Pick<
-  User,
-'email' | 'name' | 'studentCode'
-> & {
+export type CreateUserDto = Pick<User, 'email' | 'name' | 'studentCode'> & {
   password: string
 }

@@ -54,6 +54,7 @@ const {
   description: createUserModalDescription,
   openModal: openCreateUserModal,
   closeModal: closeCreateUserModal,
+  isLoading: isCreatingUser,
   handleCreateUser,
 } = useCreateUserModal()
 
@@ -61,6 +62,7 @@ function useCreateUserModal() {
   const title = 'New user'
   const description = 'Add a new user to your database'
   const isVisible = ref(false)
+  const isLoading = ref(false)
 
   const openModal = () => {
     isVisible.value = true
@@ -70,14 +72,24 @@ function useCreateUserModal() {
     isVisible.value = false
   }
 
+  const usersStore = useUsersStore()
   const handleCreateUser = async (createUserDto: CreateUserDto) => {
-    console.log(createUserDto)
+    if (isLoading.value)
+      return
+
+    isLoading.value = true
+    const newUser = await usersStore.createUser({ ...createUserDto })
+    isLoading.value = false
+
+    if (newUser)
+      closeModal()
   }
 
   return {
     title,
     description,
     isVisible,
+    isLoading,
     openModal,
     closeModal,
     handleCreateUser,
@@ -132,7 +144,11 @@ function useCreateUserModal() {
       :description="createUserModalDescription"
       :ui="{ width: 'sm:max-w-md' }"
     >
-      <UsersForm @close="closeCreateUserModal" @submit="handleCreateUser" />
+      <UsersForm
+        :loading="isCreatingUser"
+        @close="closeCreateUserModal"
+        @submit="handleCreateUser"
+      />
     </UDashboardModal>
   </UDashboardPanel>
 </template>

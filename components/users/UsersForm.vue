@@ -2,6 +2,10 @@
 import type { FormError, FormSubmitEvent } from '#ui/types'
 import type { CreateUserDto } from '~/types'
 
+defineProps<{
+  loading: boolean
+}>()
+
 const emit = defineEmits<{
   close: []
   submit: [data: CreateUserDto]
@@ -77,7 +81,7 @@ function onSubmit(event: FormSubmitEvent<any>) {
         variant="ghost"
         @click="emit('close')"
       />
-      <UButton type="submit" label="Save" color="black" />
+      <UButton :loading="loading" type="submit" label="Save" color="black" />
     </div>
   </UForm>
 </template>
