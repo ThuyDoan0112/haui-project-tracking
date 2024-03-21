@@ -29,6 +29,11 @@ const links = computed(() => {
                 to: '/admin/users',
                 exact: true,
               },
+              {
+                label: 'Classes',
+                to: '/admin/classes',
+                exact: true,
+              },
             ],
             tooltip: {
               text: 'Dashboard',
