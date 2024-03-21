@@ -5,6 +5,8 @@ export const useAuthStore = defineStore('auth', () => {
 
   const user = ref<User>()
 
+  const isAdmin = computed(() => user.value?.role === 'admin')
+
   const login = async (loginUserDto: LoginUserDto) => {
     const { error } = await useFetch('/api/auth/login', {
       method: 'POST',
@@ -42,6 +44,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   return {
     user,
+    isAdmin,
     login,
     logout,
     getUser,
