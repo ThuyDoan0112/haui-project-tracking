@@ -12,3 +12,10 @@ export interface User {
   role: Role
   studentCode?: string
 }
+
+export type CreateUserDto = Pick<
+  User,
+'email' | 'name' | 'studentCode'
+> & {
+  password: string
+}
