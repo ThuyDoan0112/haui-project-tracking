@@ -1,8 +1,9 @@
 import { format } from 'date-fns'
 
 export function formatDate(date?: Date): string {
-  if (!date)
-    return ''
+  return date ? format(new Date(date), 'dd/MM/yyyy') : ''
+}
 
-  return format(date, 'dd/MM/yyyy')
+export function formatISODate(date?: Date): string {
+  return date ? format(date, 'yyyy-MM-dd') : ''
 }

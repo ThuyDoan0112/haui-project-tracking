@@ -42,8 +42,6 @@ function validate(state: CreateClassDto): FormError[] {
 function onSubmit(event: FormSubmitEvent<CreateClassDto>) {
   emit('submit', event.data)
 }
-
-const date = ref(new Date())
 </script>
 
 <template>

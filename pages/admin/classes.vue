@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Class, ClassStatus } from '~/types'
+import type { Class, ClassStatus, CreateClassDto } from '~/types'
 
 const {
   rows: classes,
@@ -76,11 +76,81 @@ function useClassesTable() {
     handleFetchClasses,
   }
 }
+
+const {
+  isVisible: isVisibleCreateClassModal,
+  title: createClassModalTitle,
+  description: createClassModalDescription,
+  openModal: openCreateClassModal,
+  closeModal: closeCreateClassModal,
+  isLoading: isCreatingClass,
+  handleCreateClass,
+} = useCreateClassModal()
+
+const usersStore = useUsersStore()
+const { users } = storeToRefs(usersStore)
+const { fetchUsers } = usersStore
+
+watch(isVisibleCreateClassModal, async () => {
+  if (isVisibleCreateClassModal.value && !users.value.length)
+    await fetchUsers()
+})
+
+function useCreateClassModal() {
+  const title = 'New class'
+  const description = 'Add a new class to your database'
+  const isVisible = ref(false)
+  const isLoading = ref(false)
+
+  const openModal = () => {
+    isVisible.value = true
+  }
+
+  const closeModal = () => {
+    isVisible.value = false
+  }
+
+  const usersStore = useClassesStore()
+  const handleCreateClass = async (createClassDto: CreateClassDto) => {
+    if (isLoading.value)
+      return
+
+    isLoading.value = true
+    const newClass = await usersStore.createClass({
+      ...createClassDto,
+      startDate: formatISODate(createClassDto.startDate),
+      endDate: formatISODate(createClassDto.endDate),
+    })
+    isLoading.value = false
+
+    if (newClass)
+      closeModal()
+  }
+
+  return {
+    title,
+    description,
+    isVisible,
+    isLoading,
+    openModal,
+    closeModal,
+    handleCreateClass,
+  }
+}
 </script>
 
 <template>
   <UDashboardPanel grow>
-    <UDashboardNavbar title="Classes" :badge="classes.length" />
+    <UDashboardNavbar title="Classes" :badge="classes.length">
+      <template #right>
+        <UButton
+          label="New class"
+          trailing-icon="i-heroicons-plus"
+          color="gray"
+          @click="openCreateClassModal"
+        />
+      </template>
+    </UDashboardNavbar>
 
     <UTable
       :rows="classes"
@@ -107,5 +177,19 @@ function useClassesTable() {
         />
       </template>
     </UTable>
+
+    <UDashboardModal
+      v-model="isVisibleCreateClassModal"
+      :title="createClassModalTitle"
+      :description="createClassModalDescription"
+      :ui="{ width: 'sm:max-w-md' }"
+    >
+      <ClassesForm
+        :loading="isCreatingClass"
+        :users="users"
+        @close="closeCreateClassModal"
+        @submit="handleCreateClass"
+      />
+    </UDashboardModal>
   </UDashboardPanel>
 </template>

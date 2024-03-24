@@ -5,6 +5,10 @@ export const useUsersStore = defineStore('users', () => {
 
   const users = ref<User[]>([])
 
+  const getUserById = (id: number) => {
+    return users.value.find(user => user.id === id)
+  }
+
   const fetchUsers = async () => {
     const { data } = await useFetch<User[]>('/api/users')
     users.value = data.value as User[]
@@ -30,5 +34,5 @@ export const useUsersStore = defineStore('users', () => {
     return newUser.value
   }
 
-  return { users, fetchUsers, createUser }
+  return { users, fetchUsers, createUser, getUserById }
 })

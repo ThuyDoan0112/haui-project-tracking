@@ -6,7 +6,7 @@ export interface LoginUserDto {
 export type Role = 'user' | 'admin'
 
 export interface User {
-  id: string
+  id: number
   email: string
   name: string
   role: Role
@@ -32,3 +32,12 @@ export interface Class {
 
 export type ClassStatus = 'active' | 'inactive'
 
+export type CreateClassDto = Pick<
+  Class,
+  'name' | 'description' | 'code' | 'startDate' | 'endDate' | 'teacherId'
+>
+
+export interface DatePickerRange {
+  start: Date
+  end: Date
+}
