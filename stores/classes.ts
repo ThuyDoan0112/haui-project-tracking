@@ -5,10 +5,16 @@ export const useClassesStore = defineStore('classes', () => {
   const usersStore = useUsersStore()
 
   const classes = ref<Class[]>([])
+  const myClasses = ref<Class[]>([])
 
   const fetchClasses = async () => {
     const { data } = await useFetch<Class[]>('/api/classes')
     classes.value = data.value as Class[]
+  }
+
+  const fetchMyClasses = async (userId: number) => {
+    const { data } = await useFetch<Class[]>(`/api/users/${userId}/classes/`)
+    myClasses.value = data.value as Class[]
   }
 
   const createClass = async (createClassDto: CreateClassDto) => {
@@ -39,5 +45,5 @@ export const useClassesStore = defineStore('classes', () => {
     return newClass.value
   }
 
-  return { classes, fetchClasses, createClass }
+  return { classes, myClasses, fetchClasses, createClass, fetchMyClasses }
 })
