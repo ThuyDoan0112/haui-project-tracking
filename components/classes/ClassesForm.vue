@@ -36,6 +36,13 @@ function validate(state: CreateClassDto): FormError[] {
   if (!state.endDate)
     errors.push({ path: 'endDate', message: 'Please enter a end date.' })
 
+  if (new Date(state.startDate) >= new Date(state.endDate)) {
+    errors.push({
+      path: 'endDate',
+      message: 'End date must be greater than start date.',
+    })
+  }
+
   return errors
 }
 
