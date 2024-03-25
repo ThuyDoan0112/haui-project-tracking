@@ -19,6 +19,12 @@ const links = computed(() => {
       to: `/classes/${route.params.id}`,
       exact: true,
     },
+    {
+      label: 'Documents',
+      icon: 'i-heroicons-document-text',
+      to: `/classes/${route.params.id}/documents`,
+      exact: true,
+    },
   ]
 })
 </script>
