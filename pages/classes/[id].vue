@@ -25,6 +25,12 @@ const links = computed(() => {
       to: `/classes/${route.params.id}/documents`,
       exact: true,
     },
+    {
+      label: 'Students',
+      icon: 'i-heroicons-user-group',
+      to: `/classes/${route.params.id}/students`,
+      exact: true,
+    },
   ]
 })
 </script>
