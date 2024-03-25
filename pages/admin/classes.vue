@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Class, ClassStatus, CreateClassDto } from '~/types'
+import type { Class, CreateClassDto } from '~/types'
 
 const {
   rows: classes,
@@ -55,12 +55,9 @@ function useClassesTable() {
 
   const rows = computed(() => {
     return classes.value.map((classItem: Class) => {
-      const status: ClassStatus
-        = new Date(classItem.endDate) > new Date() ? 'active' : 'inactive'
-
       return {
         ...classItem,
-        status,
+        status: classesStore.getClassStatus(classItem.endDate),
         startDate: formatDate(classItem.startDate),
         endDate: formatDate(classItem.endDate),
         createdAt: formatDate(classItem.createdAt),

@@ -36,8 +36,3 @@ export type CreateClassDto = Pick<
   Class,
   'name' | 'description' | 'code' | 'startDate' | 'endDate' | 'teacherId'
 >
-
-export interface DatePickerRange {
-  start: Date
-  end: Date
-}

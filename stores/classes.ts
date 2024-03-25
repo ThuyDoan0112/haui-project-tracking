@@ -1,4 +1,4 @@
-import type { Class, CreateClassDto } from '~/types'
+import type { Class, ClassStatus, CreateClassDto } from '~/types'
 
 export const useClassesStore = defineStore('classes', () => {
   const toast = useToast()
@@ -6,6 +6,7 @@ export const useClassesStore = defineStore('classes', () => {
 
   const classes = ref<Class[]>([])
   const myClasses = ref<Class[]>([])
+  const classDetail = ref<Class>()
 
   const fetchClasses = async () => {
     const { data } = await useFetch<Class[]>('/api/classes')
@@ -15,6 +16,17 @@ export const useClassesStore = defineStore('classes', () => {
   const fetchMyClasses = async (userId: number) => {
     const { data } = await useFetch<Class[]>(`/api/users/${userId}/classes/`)
     myClasses.value = data.value as Class[]
+  }
+
+  const fetchClass = async (classId: number) => {
+    const { data, error } = await useFetch<Class>(`/api/classes/${classId}`)
+
+    if (error.value) {
+      const errorMessage = error.value.data.message || error.value.data.error
+      throw createError(errorMessage)
+    }
+
+    classDetail.value = data.value as Class
   }
 
   const createClass = async (createClassDto: CreateClassDto) => {
@@ -45,5 +57,18 @@ export const useClassesStore = defineStore('classes', () => {
     return newClass.value
   }
 
-  return { classes, myClasses, fetchClasses, createClass, fetchMyClasses }
+  const getClassStatus = (endDate: Date): ClassStatus => {
+    return new Date(endDate) > new Date() ? 'active' : 'inactive'
+  }
+
+  return {
+    classes,
+    myClasses,
+    classDetail,
+    fetchClasses,
+    createClass,
+    fetchMyClasses,
+    fetchClass,
+    getClassStatus,
+  }
 })
