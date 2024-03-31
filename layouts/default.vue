@@ -34,6 +34,11 @@ const links = computed(() => {
                 to: '/admin/classes',
                 exact: true,
               },
+              {
+                label: 'Documents',
+                to: '/admin/documents',
+                exact: true,
+              },
             ],
             tooltip: {
               text: 'Dashboard',

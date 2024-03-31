@@ -36,3 +36,10 @@ export type CreateClassDto = Pick<
   Class,
   'name' | 'description' | 'code' | 'startDate' | 'endDate' | 'teacherId'
 >
+
+export interface Document {
+  id: number
+  name: string
+  description?: string
+  path: string
+}
