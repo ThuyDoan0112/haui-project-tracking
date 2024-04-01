@@ -29,10 +29,6 @@ function useDocumentsTable() {
       key: 'description',
       label: 'Description',
     },
-    {
-      key: 'path',
-      label: 'Path',
-    },
   ]
 
   return {
@@ -62,9 +58,13 @@ function useDocumentsTable() {
     >
       <template #name-data="{ row }">
         <div class="flex items-center gap-3">
-          <span class="text-gray-900 dark:text-white font-medium">{{
-            row.name
-          }}</span>
+          <ULink
+            :to="`${useRuntimeConfig().public.apiBaseUrl}/${row.path}`"
+            class="text-gray-900 dark:text-white font-medium"
+            target="_blank"
+          >
+            {{ row.name }}
+          </ULink>
         </div>
       </template>
     </UTable>
