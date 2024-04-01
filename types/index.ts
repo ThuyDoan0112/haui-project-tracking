@@ -43,3 +43,11 @@ export interface Document {
   description?: string
   path: string
 }
+
+export interface UploadDocumentsResponse {
+  count: number
+}
+
+export interface UploadDocumentDto {
+  documents?: FileList
+}

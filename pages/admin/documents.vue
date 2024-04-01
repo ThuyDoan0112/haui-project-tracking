@@ -38,11 +38,68 @@ function useDocumentsTable() {
     handleFetchDocuments,
   }
 }
+
+const {
+  isVisible: isVisibleUploadDocumentModal,
+  title: uploadDocumentModalTitle,
+  description: uploadDocumentModalDescription,
+  openModal: openUploadDocumentModal,
+  closeModal: closeUploadDocumentModal,
+  isLoading: isCreatingUser,
+  handleUploadDocument,
+} = useUploadDocumentModal()
+
+function useUploadDocumentModal() {
+  const title = 'New documents'
+  const description = 'Add a new documents to your database'
+  const isVisible = ref(false)
+  const isLoading = ref(false)
+
+  const openModal = () => {
+    isVisible.value = true
+  }
+
+  const closeModal = () => {
+    isVisible.value = false
+  }
+
+  const documentsStore = useDocumentsStore()
+  const handleUploadDocument = async (files: FileList) => {
+    if (isLoading.value)
+      return
+
+    isLoading.value = true
+    const { count } = await documentsStore.uploadDocuments(files)
+    isLoading.value = false
+
+    if (count)
+      closeModal()
+  }
+
+  return {
+    title,
+    description,
+    isVisible,
+    isLoading,
+    openModal,
+    closeModal,
+    handleUploadDocument,
+  }
+}
 </script>
 
 <template>
   <UDashboardPanel grow>
-    <UDashboardNavbar title="Documents" :badge="documents.length" />
+    <UDashboardNavbar title="Documents" :badge="documents.length">
+      <template #right>
+        <UButton
+          label="Upload documents"
+          trailing-icon="i-heroicons-plus"
+          color="gray"
+          @click="openUploadDocumentModal"
+        />
+      </template>
+    </UDashboardNavbar>
 
     <UTable
       :rows="documents"
@@ -68,5 +125,18 @@ function useDocumentsTable() {
         </div>
       </template>
     </UTable>
+
+    <UDashboardModal
+      v-model="isVisibleUploadDocumentModal"
+      :title="uploadDocumentModalTitle"
+      :description="uploadDocumentModalDescription"
+      :ui="{ width: 'sm:max-w-md lg:max-w-lg' }"
+    >
+      <DocumentsFormUpload
+        :loading="isCreatingUser"
+        @close="closeUploadDocumentModal"
+        @submit="handleUploadDocument"
+      />
+    </UDashboardModal>
   </UDashboardPanel>
 </template>
