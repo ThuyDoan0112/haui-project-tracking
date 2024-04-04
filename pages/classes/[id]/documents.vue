@@ -1,61 +1,10 @@
 <script setup lang="ts">
-const documents = ref([
-  {
-    id: 1,
-    title: 'Document 1',
-    description: 'This is the first document.',
-    links: [
-      {
-        color: 'gray',
-        trailingIcon: 'i-heroicons-arrow-down-tray',
-      },
-    ],
-  },
-  {
-    id: 2,
-    title: 'Document 2',
-    description: 'This is the second document.',
-    links: [
-      {
-        color: 'gray',
-        trailingIcon: 'i-heroicons-arrow-down-tray',
-      },
-    ],
-  },
-  {
-    id: 3,
-    title: 'Document 3',
-    description: 'This is the second document.',
-    links: [
-      {
-        color: 'gray',
-        trailingIcon: 'i-heroicons-arrow-down-tray',
-      },
-    ],
-  },
-  {
-    id: 4,
-    title: 'Document 4',
-    description: 'This is the second document.',
-    links: [
-      {
-        color: 'gray',
-        trailingIcon: 'i-heroicons-arrow-down-tray',
-      },
-    ],
-  },
-  {
-    id: 5,
-    title: 'Document 5',
-    description: 'This is the second document.',
-    links: [
-      {
-        color: 'gray',
-        trailingIcon: 'i-heroicons-arrow-down-tray',
-      },
-    ],
-  },
-])
+const documentsOnClassesStore = useDocumentsOnClassesStore();
+const { fetchDocumentsOnClasses } = documentsOnClassesStore;
+const { documentsOnClasses } = storeToRefs(documentsOnClassesStore);
+
+const route = useRoute();
+await fetchDocumentsOnClasses(+route.params.id);
 </script>
 
 <template>
@@ -66,19 +15,18 @@ const documents = ref([
       :ui="{ wrapper: '*:pt-0' }"
       :links="[
         {
-          label: `${documents.length} Documents`,
+          label: `${documentsOnClasses.length} Documents`,
           color: 'gray',
           icon: 'i-heroicons-document-text',
         },
       ]"
     >
       <UDashboardCard
-        v-for="document in documents"
+        v-for="{ document } in documentsOnClasses"
         :key="document.id"
         icon="i-heroicons-document-text"
-        :title="document.title"
+        :title="document.name"
         :description="document.description"
-        :links="document.links"
       />
     </UDashboardSection>
   </UDashboardPanelContent>

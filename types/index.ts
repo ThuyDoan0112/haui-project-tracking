@@ -51,3 +51,9 @@ export interface UploadDocumentsResponse {
 export interface UploadDocumentDto {
   documents?: FileList
 }
+
+export interface DocumentsOnClasses {
+  classId: number
+  documentId: number
+  document: Document
+}
