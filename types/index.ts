@@ -57,3 +57,20 @@ export interface DocumentsOnClasses {
   documentId: number
   document: Document
 }
+
+export interface Project {
+  id: number
+  name: string
+  description?: string
+}
+
+export interface UsersOnClasses {
+  classId: number
+  userId: number
+  projectId: number
+  project: Project
+}
+
+export interface UploadStudentsDto {
+  sheet?: File
+}

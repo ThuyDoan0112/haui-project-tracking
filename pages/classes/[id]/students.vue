@@ -33,6 +33,51 @@ const columns = [
     key: 'project.name',
   },
 ]
+
+const {
+  importStudentModalTitle,
+  isVisibleUploadStudentsModal,
+  openUploadStudentsModal,
+  closeUploadStudentsModal,
+} = useUploadStudentsModal()
+
+const route = useRoute()
+const isLoading = ref(false)
+const usersOnClassesStore = useUsersOnClassesStore()
+async function handleUploadStudents(file: File) {
+  if (isLoading.value)
+    return
+
+  isLoading.value = true
+  const { count } = await usersOnClassesStore.uploadStudents(
+    +route.params.id,
+    file,
+  )
+  isLoading.value = false
+
+  if (count)
+    closeUploadStudentsModal()
+}
+
+function useUploadStudentsModal() {
+  const importStudentModalTitle = 'Upload Students'
+  const isVisibleUploadStudentsModal = ref(false)
+
+  const openUploadStudentsModal = () => {
+    isVisibleUploadStudentsModal.value = true
+  }
+
+  const closeUploadStudentsModal = () => {
+    isVisibleUploadStudentsModal.value = false
+  }
+
+  return {
+    isVisibleUploadStudentsModal,
+    importStudentModalTitle,
+    openUploadStudentsModal,
+    closeUploadStudentsModal,
+  }
+}
 </script>
 
 <template>
@@ -42,6 +87,12 @@ const columns = [
       description="All students in this class."
       :ui="{ wrapper: '*:pt-0' }"
       :links="[
+        {
+          label: `Upload Students`,
+          color: 'primary',
+          icon: 'i-heroicons-plus',
+          click: openUploadStudentsModal,
+        },
         {
           label: `${users.length} Students`,
           color: 'gray',
@@ -70,6 +121,17 @@ const columns = [
           </div>
         </template>
       </UTable>
+
+      <UDashboardSlideover
+        v-model="isVisibleUploadStudentsModal"
+        :title="importStudentModalTitle"
+      >
+        <UsersOnClassesFormUpload
+          :loading="isLoading"
+          @close="closeUploadStudentsModal"
+          @submit="handleUploadStudents"
+        />
+      </UDashboardSlideover>
     </UDashboardSection>
   </UDashboardPanelContent>
 </template>
