@@ -1,36 +1,21 @@
 <script setup lang="ts">
-const users = ref([
-  {
-    id: 1,
-    name: 'trankhacbinhduong',
-    email: 'trankhacbinhduong@gmail.com',
-    studentCode: '2019600234',
-    project: {
-      name: 'HaUI Project Tracking',
-    },
-  },
-])
 
 const columns = [
   {
-    key: 'id',
-    label: '#',
-  },
-  {
-    key: 'name',
+    key: 'user.name',
     label: 'Name',
   },
   {
-    key: 'email',
+    key: 'user.email',
     label: 'Email',
   },
   {
-    key: 'studentCode',
+    key: 'user.studentCode',
     label: 'Student Code',
   },
   {
     label: 'Project',
-    key: 'project.name',
+    key: 'project',
   },
 ]
 
@@ -44,6 +29,11 @@ const {
 const route = useRoute()
 const isLoading = ref(false)
 const usersOnClassesStore = useUsersOnClassesStore()
+const { usersOnClasses } = storeToRefs(usersOnClassesStore)
+const { fetchUsersOnClasses } = usersOnClassesStore
+
+await fetchUsersOnClasses(+route.params.id)
+
 async function handleUploadStudents(file: File) {
   if (isLoading.value)
     return
@@ -94,14 +84,14 @@ function useUploadStudentsModal() {
           click: openUploadStudentsModal,
         },
         {
-          label: `${users.length} Students`,
+          label: `${usersOnClasses?.length} Students`,
           color: 'gray',
           icon: 'i-heroicons-user-group',
         },
       ]"
     >
       <UTable
-        :rows="users"
+        :rows="usersOnClasses"
         :columns="columns"
         :empty-state="{
           icon: 'i-heroicons-circle-stack-20-solid',
@@ -111,14 +101,8 @@ function useUploadStudentsModal() {
         sort-mode="manual"
         class="w-full"
       >
-        <template #name-data="{ row }">
-          <div class="flex items-center gap-3">
-            <UAvatar :alt="row.name" size="xs" />
-
-            <span class="text-gray-900 dark:text-white font-medium">{{
-              row.name
-            }}</span>
-          </div>
+        <template #project-data="{ row }">
+          <NuxtLink class="underline text-primary font-semibold" :to="`/classes/${useRoute().params.id}/reports?project=${row.project.id}`">{{row.project.name}}</NuxtLink>
         </template>
       </UTable>
 

@@ -2,6 +2,17 @@ export const useUsersOnClassesStore = defineStore(
   'users-on-classes',
   () => {
     const toast = useToast()
+    const usersOnClasses = ref([])
+
+    const fetchUsersOnClasses = async (classId: number) => {
+      const { data } = await useFetch(`/api/users-on-classes`, {
+        params: {
+          classId,
+        }
+      })
+
+      usersOnClasses.value = data.value
+    }
 
     const uploadStudents = async (classId: number, file: File) => {
       const formData = new FormData()
@@ -24,7 +35,9 @@ export const useUsersOnClassesStore = defineStore(
     }
 
     return {
+      usersOnClasses,
       uploadStudents,
+      fetchUsersOnClasses,
     }
   },
 )
