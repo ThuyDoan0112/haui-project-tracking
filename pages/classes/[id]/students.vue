@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const columns = [
   {
     key: 'user.name',
@@ -34,6 +33,8 @@ const { fetchUsersOnClasses } = usersOnClassesStore
 
 await fetchUsersOnClasses(+route.params.id)
 
+const toast = useToast()
+
 async function handleUploadStudents(file: File) {
   if (isLoading.value)
     return
@@ -47,6 +48,27 @@ async function handleUploadStudents(file: File) {
 
   if (count)
     closeUploadStudentsModal()
+}
+
+const reportsStore = useReportsStore()
+const { createReports } = reportsStore
+
+async function handleCreateReports(data: any) {
+  if (isLoading.value)
+    return
+
+  const projectIds = usersOnClasses.value.map((userOnClass: any) => userOnClass.project.id)
+
+  isLoading.value = true
+  const { count } = await createReports(projectIds, data)
+  isLoading.value = false
+
+  if (count){
+    closeCreateReportsModal()
+    toast.add({
+      title: 'Create reports successfully'
+    })
+  }
 }
 
 function useUploadStudentsModal() {
@@ -68,6 +90,33 @@ function useUploadStudentsModal() {
     closeUploadStudentsModal,
   }
 }
+
+const {
+  createReportsModalTitle,
+  isVisibleCreateReportsModal,
+  openCreateReportsModal,
+  closeCreateReportsModal,
+} = useCreateReportModal()
+
+function useCreateReportModal(){
+  const createReportsModalTitle = 'Create Reports'
+  const isVisibleCreateReportsModal = ref(false)
+
+  const openCreateReportsModal = () => {
+    isVisibleCreateReportsModal.value = true
+  }
+
+  const closeCreateReportsModal = () => {
+    isVisibleCreateReportsModal.value = false
+  }
+
+  return {
+    isVisibleCreateReportsModal,
+    createReportsModalTitle,
+    openCreateReportsModal,
+    closeCreateReportsModal,
+  }
+}
 </script>
 
 <template>
@@ -77,6 +126,12 @@ function useUploadStudentsModal() {
       description="All students in this class."
       :ui="{ wrapper: '*:pt-0' }"
       :links="[
+        {
+          label: `Create Reports`,
+          color: 'primary',
+          icon: 'i-heroicons-plus',
+          click: openCreateReportsModal,
+        },
         {
           label: `Upload Students`,
           color: 'primary',
@@ -88,6 +143,7 @@ function useUploadStudentsModal() {
           color: 'gray',
           icon: 'i-heroicons-user-group',
         },
+
       ]"
     >
       <UTable
@@ -114,6 +170,17 @@ function useUploadStudentsModal() {
           :loading="isLoading"
           @close="closeUploadStudentsModal"
           @submit="handleUploadStudents"
+        />
+      </UDashboardSlideover>
+
+      <UDashboardSlideover
+        v-model="isVisibleCreateReportsModal"
+        :title="createReportsModalTitle"
+      >
+       <ReportsForm
+          :loading="isLoading"
+          @close="closeCreateReportsModal"
+          @submit="handleCreateReports"
         />
       </UDashboardSlideover>
     </UDashboardSection>
