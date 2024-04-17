@@ -8,7 +8,7 @@ export const useUsersOnClassesStore = defineStore(
       const { data } = await useFetch(`/api/users-on-classes`, {
         params: {
           classId,
-        }
+        },
       })
 
       usersOnClasses.value = data.value

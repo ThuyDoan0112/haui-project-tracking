@@ -63,10 +63,10 @@ async function handleCreateReports(data: any) {
   const { count } = await createReports(projectIds, data)
   isLoading.value = false
 
-  if (count){
+  if (count) {
     closeCreateReportsModal()
     toast.add({
-      title: 'Create reports successfully'
+      title: 'Create reports successfully',
     })
   }
 }
@@ -98,7 +98,7 @@ const {
   closeCreateReportsModal,
 } = useCreateReportModal()
 
-function useCreateReportModal(){
+function useCreateReportModal() {
   const createReportsModalTitle = 'Create Reports'
   const isVisibleCreateReportsModal = ref(false)
 
@@ -158,7 +158,9 @@ function useCreateReportModal(){
         class="w-full"
       >
         <template #project-data="{ row }">
-          <NuxtLink class="underline text-primary font-semibold" :to="`/classes/${useRoute().params.id}/reports?project=${row.project.id}`">{{row.project.name}}</NuxtLink>
+          <NuxtLink class="underline text-primary font-semibold" :to="`/classes/${useRoute().params.id}/reports?projectId=${row.project.id}`">
+            {{ row.project.name }}
+          </NuxtLink>
         </template>
       </UTable>
 
@@ -177,7 +179,7 @@ function useCreateReportModal(){
         v-model="isVisibleCreateReportsModal"
         :title="createReportsModalTitle"
       >
-       <ReportsForm
+        <ReportsForm
           :loading="isLoading"
           @close="closeCreateReportsModal"
           @submit="handleCreateReports"
