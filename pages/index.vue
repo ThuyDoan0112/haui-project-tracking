@@ -7,10 +7,15 @@ const authStore = useAuthStore()
 const { user } = storeToRefs(authStore)
 
 const classesStore = useClassesStore()
-const { myClasses } = storeToRefs(classesStore)
-const { fetchMyClasses } = classesStore
+const { teacherClasses, studentClasses } = storeToRefs(classesStore)
+const { fetchTeacherClasses, fetchStudentClasses } = classesStore
 
-await fetchMyClasses(user.value!.id)
+await fetchTeacherClasses(user.value!.id)
+await fetchStudentClasses(user.value!.id)
+
+const myClasses = computed(() => {
+  return [...teacherClasses.value, ...studentClasses.value]
+})
 </script>
 
 <template>

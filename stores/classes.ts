@@ -5,17 +5,23 @@ export const useClassesStore = defineStore('classes', () => {
   const usersStore = useUsersStore()
 
   const classes = ref<Class[]>([])
-  const myClasses = ref<Class[]>([])
+  const teacherClasses = ref<Class[]>([])
   const classDetail = ref<Class>()
+  const studentClasses = ref([])
 
   const fetchClasses = async () => {
     const { data } = await useFetch<Class[]>('/api/classes')
     classes.value = data.value as Class[]
   }
 
-  const fetchMyClasses = async (userId: number) => {
+  const fetchTeacherClasses = async (userId: number) => {
     const { data } = await useFetch<Class[]>(`/api/users/${userId}/classes/`)
-    myClasses.value = data.value as Class[]
+    teacherClasses.value = data.value as Class[]
+  }
+
+  const fetchStudentClasses = async (userId: number) => {
+    const { data } = await useFetch<Class[]>(`/api/users/${userId}/users-on-classes`)
+    studentClasses.value = data.value as any
   }
 
   const fetchClass = async (classId: number) => {
@@ -63,12 +69,14 @@ export const useClassesStore = defineStore('classes', () => {
 
   return {
     classes,
-    myClasses,
+    teacherClasses,
     classDetail,
+    studentClasses,
     fetchClasses,
     createClass,
-    fetchMyClasses,
+    fetchTeacherClasses,
     fetchClass,
     getClassStatus,
+    fetchStudentClasses,
   }
 })
