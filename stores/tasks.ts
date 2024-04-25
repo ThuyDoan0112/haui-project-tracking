@@ -25,7 +25,23 @@ export const useTasksStore = defineStore('tasks', () => {
     }
   }
 
+  const deleteTask = async (taskId: number) => {
+    await useFetch(`/api/tasks/${taskId}`, {
+      method: 'DELETE'
+    })
+  }
+
+  const updateTask = async (taskId: number, data: any) => {
+    await useFetch(`/api/tasks/${taskId}`, {
+      method: 'put',
+      body: data,
+    })
+  }
+
+
   return {
     createTask,
-  }
+    deleteTask,
+    updateTask,
+  } 
 })

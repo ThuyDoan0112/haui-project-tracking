@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { is } from 'date-fns/locale';
+
 const reportsStore = useReportsStore()
 const { fetchReports } = reportsStore
 const { reports } = storeToRefs(reportsStore)
@@ -28,7 +30,16 @@ const {
   closeCreateTaskModal,
 } = useCreateTaskModal()
 
-const { createTask } = useTasksStore()
+const { createTask, deleteTask, updateTask } = useTasksStore()
+const handleDeleteTask = async (taskId: number) => {
+  await deleteTask(taskId)
+  await fetchReports(+projectId.value)
+}
+
+const handleUpdateTask = async (taskId: number, data: any) => {
+  await updateTask(taskId, data)
+  await fetchReports(+projectId.value)
+}
 
 const selectedReportId = ref()
 const isLoading = ref(false)
@@ -79,6 +90,22 @@ function useCreateTaskModal() {
           v-for="task in item.tasks"
           :description="task.description"
           :title="task.name"
+          :actions="[
+            { 
+              variant: 'solid', 
+              label: `${task.isCompleted ? 'Completed' : 'Mark as Completed'}`, 
+              icon: `${task.isCompleted ? 'i-heroicons-check' : ''}`, 
+              color: `${task.isCompleted ? 'green' : 'orange'}`, 
+              onClick: () => handleUpdateTask(task.id, { isCompleted: !task.isCompleted }) 
+            },
+            { 
+              variant: 'solid', 
+              label: 'Delete', 
+              icon: 'i-heroicons-trash', 
+              color: 'red', 
+              onClick: () => handleDeleteTask(task.id)
+            }
+          ]"
           class="mb-4"
         />
         <UButton label="Add New Task" icon="i-heroicons-plus" @click="handleOpenCreateTaskModal(item.id)" />
