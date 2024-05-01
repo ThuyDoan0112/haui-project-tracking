@@ -66,35 +66,37 @@ function onSubmit(event: FormSubmitEvent<any>) {
         v-model="state.description"
         type="text"
         placeholder="Enter report description"
-        rows="15"
+        rows="5"
       />
     </UFormGroup>
 
-    <UFormGroup label="Start Date" name="startDate">
-      <UPopover :popper="{ placement: 'bottom-start' }">
-        <UButton
-          icon="i-heroicons-calendar-days-20-solid"
-          :label="formatDate(state.startDate)"
-        />
+    <div class="flex justify-between">
+      <UFormGroup label="Start Date" name="startDate" class="flex-1">
+        <UPopover :popper="{ placement: 'bottom-start' }">
+          <UButton
+            icon="i-heroicons-calendar-days-20-solid"
+            :label="formatDate(state.startDate)"
+          />
 
-        <template #panel="{ close }">
-          <DatePicker v-model="state.startDate" @close="close" />
-        </template>
-      </UPopover>
-    </UFormGroup>
+          <template #panel="{ close }">
+            <DatePicker v-model="state.startDate" @close="close" />
+          </template>
+        </UPopover>
+      </UFormGroup>
 
-    <UFormGroup label="Due Date" name="dueDate">
-      <UPopover :popper="{ placement: 'bottom-start' }">
-        <UButton
-          icon="i-heroicons-calendar-days-20-solid"
-          :label="formatDate(state.dueDate)"
-        />
+      <UFormGroup label="Due Date" name="dueDate" class="flex-1">
+        <UPopover :popper="{ placement: 'bottom-start' }">
+          <UButton
+            icon="i-heroicons-calendar-days-20-solid"
+            :label="formatDate(state.dueDate)"
+          />
 
-        <template #panel="{ close }">
-          <DatePicker v-model="state.dueDate" @close="close" />
-        </template>
-      </UPopover>
-    </UFormGroup>
+          <template #panel="{ close }">
+            <DatePicker v-model="state.dueDate" @close="close" />
+          </template>
+        </UPopover>
+      </UFormGroup>
+    </div>
 
     <div class="flex justify-end gap-3">
       <UButton

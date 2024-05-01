@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { is } from 'date-fns/locale';
-
 const reportsStore = useReportsStore()
 const { fetchReports } = reportsStore
 const { reports } = storeToRefs(reportsStore)
@@ -31,12 +29,12 @@ const {
 } = useCreateTaskModal()
 
 const { createTask, deleteTask, updateTask } = useTasksStore()
-const handleDeleteTask = async (taskId: number) => {
+async function handleDeleteTask(taskId: number) {
   await deleteTask(taskId)
   await fetchReports(+projectId.value)
 }
 
-const handleUpdateTask = async (taskId: number, data: any) => {
+async function handleUpdateTask(taskId: number, data: any) {
   await updateTask(taskId, data)
   await fetchReports(+projectId.value)
 }
@@ -91,20 +89,20 @@ function useCreateTaskModal() {
           :description="task.description"
           :title="task.name"
           :actions="[
-            { 
-              variant: 'solid', 
-              label: `${task.isCompleted ? 'Completed' : 'Mark as Completed'}`, 
-              icon: `${task.isCompleted ? 'i-heroicons-check' : ''}`, 
-              color: `${task.isCompleted ? 'green' : 'orange'}`, 
-              onClick: () => handleUpdateTask(task.id, { isCompleted: !task.isCompleted }) 
+            {
+              variant: 'solid',
+              label: `${task.isCompleted ? 'Completed' : 'Mark as Completed'}`,
+              icon: `${task.isCompleted ? 'i-heroicons-check' : ''}`,
+              color: `${task.isCompleted ? 'green' : 'orange'}`,
+              onClick: () => handleUpdateTask(task.id, { isCompleted: !task.isCompleted }),
             },
-            { 
-              variant: 'solid', 
-              label: 'Delete', 
-              icon: 'i-heroicons-trash', 
-              color: 'red', 
-              onClick: () => handleDeleteTask(task.id)
-            }
+            {
+              variant: 'solid',
+              label: 'Delete',
+              icon: 'i-heroicons-trash',
+              color: 'red',
+              onClick: () => handleDeleteTask(task.id),
+            },
           ]"
           class="mb-4"
         />
