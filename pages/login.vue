@@ -31,9 +31,7 @@ function validate(state: any) {
   return errors
 }
 
-function handleLogin(data: any) {
-  console.log('Submitted', data)
-}
+const authStore = useAuthStore()
 </script>
 
 <template>
@@ -46,7 +44,7 @@ function handleLogin(data: any) {
       icon="i-heroicons-lock-closed"
       :ui="{ base: 'text-center', footer: 'text-center' }"
       :submit-button="{ trailingIcon: 'i-heroicons-arrow-right-20-solid' }"
-      @submit="handleLogin"
+      @submit="authStore.login"
     />
   </UCard>
 </template>
