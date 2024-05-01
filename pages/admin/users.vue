@@ -10,6 +10,7 @@ function useUsersTable() {
 
   const usersStore = useUsersStore()
   const { users } = storeToRefs(usersStore)
+  const filteredUsers = computed(() => users.value.filter(user => !user.studentCode))
 
   const handleFetchUsers = async () => {
     isLoading.value = true
@@ -31,17 +32,13 @@ function useUsersTable() {
       label: 'Email',
     },
     {
-      key: 'studentCode',
-      label: 'Student Code',
-    },
-    {
       key: 'role',
       label: 'Role',
     },
   ]
 
   return {
-    users,
+    users: filteredUsers,
     isLoading,
     columns,
     handleFetchUsers,
