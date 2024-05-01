@@ -42,7 +42,7 @@ const myClasses = computed(() => {
                 label: '',
                 color: 'gray',
                 trailingIcon: 'i-heroicons-arrow-right-20-solid',
-                to: `/classes/${myClass.id}`,
+                to: `/classes/${myClass.id}/students`,
               },
             ]"
           />

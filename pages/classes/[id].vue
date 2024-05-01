@@ -13,22 +13,22 @@ await fetchClass(+route.params.id)
 
 const links = computed(() => {
   return [
+    // {
+    //   label: 'General',
+    //   icon: 'i-heroicons-information-circle',
+    //   to: `/classes/${route.params.id}`,
+    //   exact: true,
+    // },
     {
-      label: 'General',
-      icon: 'i-heroicons-information-circle',
-      to: `/classes/${route.params.id}`,
+      label: 'Students',
+      icon: 'i-heroicons-user-group',
+      to: `/classes/${route.params.id}/students`,
       exact: true,
     },
     {
       label: 'Documents',
       icon: 'i-heroicons-document-text',
       to: `/classes/${route.params.id}/documents`,
-      exact: true,
-    },
-    {
-      label: 'Students',
-      icon: 'i-heroicons-user-group',
-      to: `/classes/${route.params.id}/students`,
       exact: true,
     },
   ]
