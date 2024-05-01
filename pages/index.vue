@@ -16,6 +16,8 @@ await fetchStudentClasses(user.value!.id)
 const myClasses = computed(() => {
   return [...teacherClasses.value, ...studentClasses.value]
 })
+
+const isTeacher = (myClass: any) => myClass.teacherId === user.value!.id
 </script>
 
 <template>
@@ -42,7 +44,7 @@ const myClasses = computed(() => {
                 label: '',
                 color: 'gray',
                 trailingIcon: 'i-heroicons-arrow-right-20-solid',
-                to: `/classes/${myClass.id}/students`,
+                to: `${isTeacher(myClass) ? `/classes/${myClass.id}/students` : `/projects/${myClass.project?.id}`}`,
               },
             ]"
           />
