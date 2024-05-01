@@ -50,15 +50,10 @@ function useSelectDocumentsModal() {
       :ui="{ wrapper: '*:pt-0' }"
       :links="[
         {
-          label: `Add Documents`,
-          color: 'primary',
+          label: `Documents`,
+          color: 'gray',
           icon: 'i-heroicons-plus',
           click: openSelectDocumentsModal,
-        },
-        {
-          label: `${documentsOnClasses.length} Documents`,
-          color: 'gray',
-          icon: 'i-heroicons-document-text',
         },
       ]"
     >
