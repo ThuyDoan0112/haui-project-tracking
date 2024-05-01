@@ -123,27 +123,21 @@ function useCreateReportModal() {
   <UDashboardPanelContent class="pb-12">
     <UDashboardSection
       title="Class Students"
-      description="All students in this class."
+      :description="`${usersOnClasses?.length} students.`"
       :ui="{ wrapper: '*:pt-0' }"
       :links="[
         {
-          label: `Create Reports`,
+          label: `Reports`,
           color: 'primary',
           icon: 'i-heroicons-plus',
           click: openCreateReportsModal,
         },
         {
-          label: `Upload Students`,
-          color: 'primary',
-          icon: 'i-heroicons-plus',
+          label: `Students`,
+          color: 'gray',
+          icon: 'i-heroicons-arrow-up-on-square',
           click: openUploadStudentsModal,
         },
-        {
-          label: `${usersOnClasses?.length} Students`,
-          color: 'gray',
-          icon: 'i-heroicons-user-group',
-        },
-
       ]"
     >
       <UTable
@@ -158,7 +152,7 @@ function useCreateReportModal() {
         class="w-full"
       >
         <template #project-data="{ row }">
-          <NuxtLink class="underline text-primary font-semibold" :to="`/classes/${useRoute().params.id}/reports?projectId=${row.project.id}`">
+          <NuxtLink class="underline text-primary font-semibold" :to="`/projects/${row.project.id}`">
             {{ row.project.name }}
           </NuxtLink>
         </template>
