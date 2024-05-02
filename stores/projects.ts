@@ -18,10 +18,20 @@ export const useProjectStore = defineStore('projects', () => {
     sources.value = data.value
   }
 
+  const createSource = async (source: any) => {
+    const { data } =  await useFetch(`/api/project-sources`, {
+      method: 'POST',
+      body: source
+    })
+
+    sources.value.push(data.value)
+  }
+
   return {
     project, 
     sources,
     fetchProject,
     fetchSources,
+    createSource,
   }
 })

@@ -2,9 +2,48 @@
 const projectsStore = useProjectStore();
 
 const { sources } = storeToRefs(projectsStore);
-const { fetchSources } = projectsStore;
+const { fetchSources, createSource } = projectsStore;
 
 await fetchSources(+useRoute().params.id);
+
+const { 
+  isVisibleCreateSourceModal, 
+  createSourceModalTitle, 
+  openCreateSourceModal, 
+  closeCreateSourceModal 
+} = useCreateTaskModal();
+
+const isLoading = ref(false)
+async function handleCreateSource(data: any) {
+  if (isLoading.value)
+    return
+
+  isLoading.value = true
+  await createSource({ ...data, projectId: +useRoute().params.id }).finally(() => isLoading.value = false)
+
+  closeCreateSourceModal()
+}
+
+
+function useCreateTaskModal() {
+  const createSourceModalTitle = 'Create Task'
+  const isVisibleCreateSourceModal = ref(false)
+
+  const openCreateSourceModal = () => {
+    isVisibleCreateSourceModal.value = true
+  }
+
+  const closeCreateSourceModal = () => {
+    isVisibleCreateSourceModal.value = false
+  }
+
+  return {
+    isVisibleCreateSourceModal,
+    createSourceModalTitle,
+    openCreateSourceModal,
+    closeCreateSourceModal,
+  }
+}
 </script>
 
 <template>
@@ -18,7 +57,7 @@ await fetchSources(+useRoute().params.id);
           label: `New`,
           color: 'primary',
           icon: 'i-heroicons-plus',
-          click: () => {},
+          click: openCreateSourceModal,
         },
       ]"
     >
@@ -31,5 +70,15 @@ await fetchSources(+useRoute().params.id);
         :links="[{ color: 'gray', trailingIcon: 'i-heroicons-arrow-right-20-solid', to: source.path, target: '_blank'}]"
       />
     </UDashboardSection>
+    <UDashboardSlideover
+      v-model="isVisibleCreateSourceModal"
+      :title="createSourceModalTitle"
+    >
+      <SourcesForm
+        :loading="isLoading"
+        @close="closeCreateSourceModal"
+        @submit="handleCreateSource"
+      />
+    </UDashboardSlideover>
   </UDashboardPanelContent>
 </template>
