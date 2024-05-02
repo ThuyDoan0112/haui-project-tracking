@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { FormError, FormSubmitEvent } from '#ui/types'
 
-defineProps<{
+const props = defineProps<{
+  initValues?: any
   loading: boolean
 }>()
 
@@ -10,8 +11,12 @@ const emit = defineEmits<{
 }>()
 
 const state = reactive({
-  name: undefined,
-  description: undefined,
+  name: props.initValues?.name || undefined, 
+  description: props.initValues?.description || undefined,
+})
+watchEffect(() => {
+  state.name = props.initValues?.name || undefined
+  state.description = props.initValues?.description || undefined
 })
 
 function validate(state: any): FormError[] {
@@ -28,6 +33,7 @@ function onSubmit(event: FormSubmitEvent<any>) {
 
   // Reset the form
   state.name = undefined
+  state.description = undefined
 }
 </script>
 
@@ -39,16 +45,21 @@ function onSubmit(event: FormSubmitEvent<any>) {
     class="space-y-4 flex items-end gap-4"
     @submit="onSubmit"
   >
-    <UFormGroup label="New Task" name="name" class="w-1/2">
+    <UFormGroup label="Task" name="name" class="w-1/2">
       <UInput
         v-model="state.name"
+        autofocus
+      />
+    </UFormGroup>
+    <UFormGroup label="Output" name="description" class="w-1/2">
+      <UInput
+        v-model="state.description"
         autofocus
       />
     </UFormGroup>
 
     <UButton
       label="Save"
-      icon="i-heroicons-plus"
       type="submit"
     />
   </UForm>

@@ -24,6 +24,12 @@ const reportItems = computed(() => {
   });
 });
 
+const selectedTask = ref()
+
+const setSelectedTask = (task: any) => {
+  selectedTask.value = task;
+};
+
 const { createTask, deleteTask, updateTask } = useTasksStore();
 async function handleDeleteTask(taskId: number) {
   await deleteTask(taskId);
@@ -54,9 +60,13 @@ async function handleCreateTask(reportId: number, data: any) {
           {{ item.content }}
         </p>
         <UAlert
-          v-for="task in item.tasks"
-          :description="task.description"
+          v-for="(task, index) in item.tasks"
           :actions="[
+            {
+              variant: 'solid',
+              icon: 'i-heroicons-pencil-square',
+              onClick: () => setSelectedTask(task),
+            },
             {
               variant: 'solid',
               label: `${task.isCompleted ? 'Completed' : 'Mark as Completed'}`,
@@ -71,19 +81,22 @@ async function handleCreateTask(reportId: number, data: any) {
               color: 'red',
               onClick: () => handleDeleteTask(task.id),
             },
+
           ]"
           class="mb-4"
         >
             <template #title>
               <span class="font-semibold" :class="{
                 'line-through': task.isCompleted,
-              }">{{ task.name }}</span>
+              }">{{ index + 1 }}. {{ task.name }}</span>
+              <br>
+              <span v-if="task.description">{{ task.description }}</span>
             </template>
         </UAlert>
 
         <UDivider class="my-4"/>
         
-        <TasksForm :loading="isLoading" @submit="(data) => handleCreateTask(item.id, data)"/>
+        <TasksForm :init-values="selectedTask" :loading="isLoading" @submit="(data) => selectedTask ? handleUpdateTask(selectedTask.id, data) : handleCreateTask(item.id, data)"/>
       </template>
     </UAccordion>
   </UDashboardPanelContent>
