@@ -6,6 +6,11 @@ const reportsStore = useReportsStore();
 const { fetchReports } = reportsStore;
 const { reports } = storeToRefs(reportsStore);
 
+const classStore = useClassesStore();
+const { isTeacher } = storeToRefs(classStore);
+
+await classStore.fetchClass(+useRoute().query.classId)
+
 const projectId = computed(() => {
   return useRoute().params.id;
 });
@@ -108,7 +113,7 @@ async function handleCreateTask(reportId: number, data: any) {
         
         <TasksForm :init-values="selectedTask" :loading="isLoading" @submit="(data) => selectedTask ? handleUpdateTask(selectedTask.id, data) : handleCreateTask(item.id, data)"/>
         <UDivider class="my-4"/>
-        <ReportsComment :comment="item.comment" @submit="(comment) => handleCommentReport(item.id, comment)"/>
+        <ReportsComment :is-teacher="isTeacher" :comment="item.comment" @submit="(comment) => handleCommentReport(item.id, comment)"/>
       </template>
     </UAccordion>
   </UDashboardPanelContent>

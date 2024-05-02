@@ -2,6 +2,7 @@
 import type { FormSubmitEvent } from '#ui/types'
 
 const props = defineProps<{
+  isTeacher: boolean
   comment: string
 }>()
 
@@ -30,13 +31,14 @@ function onSubmit(event: FormSubmitEvent<any>) {
   >
     <UFormGroup label="Comment" name="comment">
       <UTextarea
+        :readonly="!isTeacher"
         v-model="state.comment"
         type="text"
         rows="5"
       />
     </UFormGroup>
     <div class="flex justify-end gap-3">
-      <UButton type="submit" label="Save" />
+      <UButton type="submit" label="Save" v-if="isTeacher"/>
     </div>
   </UForm>
 </template>

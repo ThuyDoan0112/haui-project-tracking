@@ -3,11 +3,17 @@ import type { Class, ClassStatus, CreateClassDto } from '~/types'
 export const useClassesStore = defineStore('classes', () => {
   const toast = useToast()
   const usersStore = useUsersStore()
+  const authStore = useAuthStore()
+  const { user } = storeToRefs(authStore)
 
   const classes = ref<Class[]>([])
   const teacherClasses = ref<Class[]>([])
   const classDetail = ref<Class>()
   const studentClasses = ref([])
+
+  const isTeacher = computed(() => {
+    return user.value?.id === classDetail.value?.teacherId
+  })
 
   const fetchClasses = async () => {
     const { data } = await useFetch<Class[]>('/api/classes')
@@ -68,6 +74,7 @@ export const useClassesStore = defineStore('classes', () => {
   }
 
   return {
+    isTeacher,
     classes,
     teacherClasses,
     classDetail,

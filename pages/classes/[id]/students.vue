@@ -152,7 +152,7 @@ function useCreateReportModal() {
         class="w-full"
       >
         <template #project-data="{ row }">
-          <NuxtLink class="underline text-primary font-semibold" :to="`/projects/${row.project.id}`">
+          <NuxtLink class="underline text-primary font-semibold" :to="`/projects/${row.project.id}?classId=${row.classId}`">
             {{ row.project.name }}
           </NuxtLink>
         </template>

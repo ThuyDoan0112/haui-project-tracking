@@ -44,7 +44,7 @@ const isTeacher = (myClass: any) => myClass.teacherId === user.value!.id
                 label: '',
                 color: 'gray',
                 trailingIcon: 'i-heroicons-arrow-right-20-solid',
-                to: `${isTeacher(myClass) ? `/classes/${myClass.id}/students` : `/projects/${myClass.project?.id}`}`,
+                to: `${isTeacher(myClass) ? `/classes/${myClass.id}/students` : `/projects/${myClass.project?.id}?classId=${myClass.id}`}`,
               },
             ]"
           />
