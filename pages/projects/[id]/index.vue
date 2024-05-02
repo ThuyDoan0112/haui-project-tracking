@@ -16,7 +16,7 @@ const reportItems = computed(() => {
   return reports.value.map((report) => {
     return {
       id: report.id,
-      label: `${report.name} (${format(new Date(report.startDate), 'yyyy/MM/dd')} - ${format(new Date(report.dueDate), 'yyyy/MM/dd')})`,
+      label: `${report.name} (${format(new Date(report.startDate), 'yyyy/MM/dd')} - ${format(new Date(report.dueDate), 'yyyy/MM/dd')}) (${report.tasks.filter((task) => task.isCompleted).length}/${report.tasks.length} tasks completed)`,
       content: report.description || "No description",
       icon: "i-heroicons-document-text",
       tasks: report.tasks,
