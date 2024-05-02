@@ -17,9 +17,17 @@ export const useReportsStore = defineStore('reports', () => {
     return data.value
   }
 
+  const commentReport = async (reportId: number, commentData: any) => {
+    await useFetch(`/api/reports/${reportId}`, {
+      method: 'PUT',
+      body: commentData,
+    })
+  }
+
   return {
     reports,
     fetchReports,
     createReports,
+    commentReport,
   }
 })

@@ -20,6 +20,7 @@ const reportItems = computed(() => {
       content: report.description || "No description",
       icon: "i-heroicons-document-text",
       tasks: report.tasks,
+      comment: report.comment,
     };
   });
 });
@@ -31,6 +32,13 @@ const setSelectedTask = (task: any) => {
 };
 
 const { createTask, deleteTask, updateTask } = useTasksStore();
+const { commentReport} = useReportsStore();
+
+const handleCommentReport = async (reportId: number, data: any) => {
+  await commentReport(reportId, data);
+  await fetchReports(+projectId.value);
+};
+
 async function handleDeleteTask(taskId: number) {
   await deleteTask(taskId);
   await fetchReports(+projectId.value);
@@ -50,6 +58,8 @@ async function handleCreateTask(reportId: number, data: any) {
     () => (isLoading.value = false)
   );
 }
+
+
 </script>
 
 <template>
@@ -97,6 +107,8 @@ async function handleCreateTask(reportId: number, data: any) {
         <UDivider class="my-4"/>
         
         <TasksForm :init-values="selectedTask" :loading="isLoading" @submit="(data) => selectedTask ? handleUpdateTask(selectedTask.id, data) : handleCreateTask(item.id, data)"/>
+        <UDivider class="my-4"/>
+        <ReportsComment :comment="item.comment" @submit="(comment) => handleCommentReport(item.id, comment)"/>
       </template>
     </UAccordion>
   </UDashboardPanelContent>
