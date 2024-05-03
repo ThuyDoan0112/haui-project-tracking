@@ -15,13 +15,13 @@ const links = computed(() => {
     {
       label: 'Overview',
       icon: 'i-heroicons-calendar',
-      to: `/projects/${route.params.id}`,
+      to: `/projects/${route.params.id}?classId=${route.query.classId}`,
       exact: true,
     },
     {
       label: 'Sources',
       icon: 'i-heroicons-document-text',
-      to: `/projects/${route.params.id}/sources`,
+      to: `/projects/${route.params.id}/sources?classId=${route.query.classId}`,
       exact: true,
     },
   ]

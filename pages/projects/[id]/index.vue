@@ -77,7 +77,7 @@ async function handleCreateTask(reportId: number, data: any) {
         <UAlert
           v-for="(task, index) in item.tasks"
           :actions="[
-            {
+            !isTeacher && {
               variant: 'solid',
               icon: 'i-heroicons-pencil-square',
               onClick: () => setSelectedTask(task),
@@ -87,16 +87,11 @@ async function handleCreateTask(reportId: number, data: any) {
               label: `${task.isCompleted ? 'Completed' : 'Mark as Completed'}`,
               icon: `${task.isCompleted ? 'i-heroicons-check' : ''}`,
               color: `${task.isCompleted ? 'green' : 'orange'}`,
-              onClick: () =>
-                handleUpdateTask(task.id, { isCompleted: !task.isCompleted }),
+              onClick: () => {
+                if(isTeacher) return;
+                handleUpdateTask(task.id, { isCompleted: !task.isCompleted })
+              },
             },
-            {
-              variant: 'solid',
-              icon: 'i-heroicons-trash',
-              color: 'red',
-              onClick: () => handleDeleteTask(task.id),
-            },
-
           ]"
           class="mb-4"
         >
@@ -109,10 +104,11 @@ async function handleCreateTask(reportId: number, data: any) {
             </template>
         </UAlert>
 
-        <UDivider class="my-4"/>
+        <UDivider v-if="!isTeacher" class="my-4"/>
+        <TasksForm v-if="!isTeacher" :init-values="selectedTask" :loading="isLoading" @submit="(data) => selectedTask ? handleUpdateTask(selectedTask.id, data) : handleCreateTask(item.id, data)"/>
         
-        <TasksForm :init-values="selectedTask" :loading="isLoading" @submit="(data) => selectedTask ? handleUpdateTask(selectedTask.id, data) : handleCreateTask(item.id, data)"/>
-        <UDivider class="my-4"/>
+          <UDivider class="my-4"/>
+
         <ReportsComment :is-teacher="isTeacher" :comment="item.comment" @submit="(comment) => handleCommentReport(item.id, comment)"/>
       </template>
     </UAccordion>
