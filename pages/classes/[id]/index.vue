@@ -1,4 +1,10 @@
 <script setup lang="ts">
+definePageMeta({
+  middleware: () => {
+    return navigateTo(`/classes/${useRoute().params.id}/students`)
+  }
+})
+
 const classesStore = useClassesStore()
 const { classDetail } = storeToRefs(classesStore)
 
