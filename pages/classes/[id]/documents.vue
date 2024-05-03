@@ -14,6 +14,8 @@ async function handleAddDocumentToClass(documentIds: number[]) {
     closeSelectDocumentsModal()
 }
 
+
+
 const {
   isVisibleSelectDocumentsModal,
   selectDocumentsModalTitle,
@@ -63,6 +65,10 @@ function useSelectDocumentsModal() {
         icon="i-heroicons-document-text"
         :title="document.name"
         :description="document.description"
+        :links="[{ label: 'View', color: 'gray', trailingIcon: 'i-heroicons-arrow-right-20-solid', 
+        target: '_blank', 
+        to:  `http://localhost:8000/${document.path}`
+        }]"
       />
       <UDashboardSlideover
         v-model="isVisibleSelectDocumentsModal"
