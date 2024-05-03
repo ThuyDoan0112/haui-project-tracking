@@ -14,8 +14,6 @@ async function handleAddDocumentToClass(documentIds: number[]) {
     closeSelectDocumentsModal()
 }
 
-
-
 const {
   isVisibleSelectDocumentsModal,
   selectDocumentsModalTitle,

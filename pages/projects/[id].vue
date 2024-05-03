@@ -24,6 +24,12 @@ const links = computed(() => {
       to: `/projects/${route.params.id}/sources?classId=${route.query.classId}`,
       exact: true,
     },
+    {
+      label: 'Documents',
+      icon: 'i-heroicons-document-text',
+      to: `/projects/${route.params.id}/documents?classId=${route.query.classId}`,
+      exact: true,
+    },
   ]
 })
 </script>
