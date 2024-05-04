@@ -40,7 +40,6 @@ function validate(state: any): FormError[] {
 }
 
 function onSubmit(event: FormSubmitEvent<any>) {
-  console.log('data', event.data)
   emit('submit', event.data)
 }
 </script>

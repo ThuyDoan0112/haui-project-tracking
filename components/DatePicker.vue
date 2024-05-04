@@ -51,8 +51,9 @@ const attrs = {
     :columns="smallerThanSm ? 1 : 2"
     :rows="smallerThanSm ? 2 : 1"
     v-bind="{ ...attrs, ...$attrs }"
+    timezone="UTC"
   />
-  <VCalendarDatePicker v-else v-model="date" v-bind="{ ...attrs, ...$attrs }" />
+  <VCalendarDatePicker v-else v-model="date" v-bind="{ ...attrs, ...$attrs }" timezone="UTC"/>
 </template>
 
 <style>
