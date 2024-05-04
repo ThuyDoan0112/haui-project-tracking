@@ -52,6 +52,7 @@ const handleCommentReport = async (reportId: number, data: any) => {
 async function handleUpdateTask(taskId: number, data: any) {
   await updateTask(taskId, data);
   await fetchReports(+projectId.value);
+  selectedTask.value = undefined
 }
 
 const isLoading = ref(false);
