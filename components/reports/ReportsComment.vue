@@ -38,7 +38,7 @@ function onSubmit(event: FormSubmitEvent<any>) {
       />
     </UFormGroup>
     <div class="flex justify-end gap-3">
-      <UButton type="submit" label="Save" v-if="isTeacher"/>
+      <UButton type="submit" label="Save" v-if="isTeacher" :disabled="state.comment === comment"/>
     </div>
   </UForm>
 </template>

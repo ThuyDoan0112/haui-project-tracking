@@ -36,18 +36,18 @@ const setSelectedTask = (task: any) => {
   selectedTask.value = task;
 };
 
-const { createTask, deleteTask, updateTask } = useTasksStore();
+const { createTask, updateTask } = useTasksStore();
 const { commentReport} = useReportsStore();
+
+const toast = useToast()
 
 const handleCommentReport = async (reportId: number, data: any) => {
   await commentReport(reportId, data);
   await fetchReports(+projectId.value);
+  toast.add({
+    title: "Comment success!"
+  })
 };
-
-async function handleDeleteTask(taskId: number) {
-  await deleteTask(taskId);
-  await fetchReports(+projectId.value);
-}
 
 async function handleUpdateTask(taskId: number, data: any) {
   await updateTask(taskId, data);
@@ -63,8 +63,6 @@ async function handleCreateTask(reportId: number, data: any) {
     () => (isLoading.value = false)
   );
 }
-
-
 </script>
 
 <template>
