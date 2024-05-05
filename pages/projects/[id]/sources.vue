@@ -4,7 +4,11 @@ const projectsStore = useProjectStore();
 const { sources } = storeToRefs(projectsStore);
 const { fetchSources, createSource } = projectsStore;
 
+const classStore = useClassesStore();
+const { isTeacher } = storeToRefs(classStore);
+
 await fetchSources(+useRoute().params.id);
+await classStore.fetchClass(+useRoute().query.classId)
 
 const { 
   isVisibleCreateSourceModal, 
@@ -23,6 +27,18 @@ async function handleCreateSource(data: any) {
 
   closeCreateSourceModal()
 }
+
+const links = computed(() => {
+  if(isTeacher.value) return []
+  return [
+        {
+          label: `New`,
+          color: 'primary',
+          icon: 'i-heroicons-plus',
+          click: openCreateSourceModal,
+        },
+      ]
+})
 
 
 function useCreateTaskModal() {
@@ -52,14 +68,7 @@ function useCreateTaskModal() {
       title="Project Sources"
       description="Sources related to this project."
       :ui="{ wrapper: '*:pt-0' }"
-      :links="[
-        {
-          label: `New`,
-          color: 'primary',
-          icon: 'i-heroicons-plus',
-          click: openCreateSourceModal,
-        },
-      ]"
+      :links="links"
     >
       <UDashboardCard
         v-for="source in sources"

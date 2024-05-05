@@ -8,6 +8,9 @@ const route = useRoute()
 const projectsStore = useProjectStore()
 const { project } = storeToRefs(projectsStore)
 
+const classStore = useClassesStore();
+const { isTeacher } = storeToRefs(classStore);
+
 await projectsStore.fetchProject(+route.params.id)
 
 const links = computed(() => {
@@ -24,6 +27,7 @@ const links = computed(() => {
       to: `/projects/${route.params.id}/sources?classId=${route.query.classId}`,
       exact: true,
     },
+    !isTeacher.value &&
     {
       label: 'Documents',
       icon: 'i-heroicons-document-text',
