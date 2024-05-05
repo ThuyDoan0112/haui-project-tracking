@@ -46,8 +46,7 @@ async function handleUploadStudents(file: File) {
   )
   isLoading.value = false
 
-  if (count)
-    closeUploadStudentsModal()
+  closeUploadStudentsModal()
 }
 
 const reportsStore = useReportsStore()
