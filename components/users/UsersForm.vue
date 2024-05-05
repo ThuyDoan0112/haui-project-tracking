@@ -15,7 +15,6 @@ const state = reactive({
   name: undefined,
   email: undefined,
   password: undefined,
-  studentCode: undefined,
 })
 
 function validate(state: CreateUserDto): FormError[] {
@@ -63,14 +62,6 @@ function onSubmit(event: FormSubmitEvent<any>) {
         v-model="state.password"
         type="password"
         placeholder="**********"
-      />
-    </UFormGroup>
-
-    <UFormGroup label="Student Code" name="studentCode">
-      <UInput
-        v-model="state.studentCode"
-        type="text"
-        placeholder="2019600234"
       />
     </UFormGroup>
 

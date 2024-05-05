@@ -88,6 +88,8 @@ const usersStore = useUsersStore()
 const { users } = storeToRefs(usersStore)
 const { fetchUsers } = usersStore
 
+const teachers = computed(() => users.value.filter((user) => !user.studentCode))
+
 watch(isVisibleCreateClassModal, async () => {
   if (isVisibleCreateClassModal.value && !users.value.length)
     await fetchUsers()
@@ -183,7 +185,7 @@ function useCreateClassModal() {
     >
       <ClassesForm
         :loading="isCreatingClass"
-        :users="users"
+        :users="teachers"
         @close="closeCreateClassModal"
         @submit="handleCreateClass"
       />
