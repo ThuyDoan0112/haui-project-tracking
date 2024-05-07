@@ -1,6 +1,7 @@
 import type { LoginUserDto, User } from '~/types'
 
 export const useAuthStore = defineStore('auth', () => {
+  const { $i18n } = useNuxtApp()
   const toast = useToast()
 
   const user = ref<User>()
@@ -16,13 +17,13 @@ export const useAuthStore = defineStore('auth', () => {
     if (error.value) {
       const errorMessage = error.value.data.message || error.value.data.error
       return toast.add({
-        title: 'Login failed',
+        title: $i18n.t('login.message.error'),
         description: errorMessage,
       })
     }
 
     toast.add({
-      title: 'Login success',
+      title: $i18n.t('login.message.success'),
     })
 
     return navigateTo('/')

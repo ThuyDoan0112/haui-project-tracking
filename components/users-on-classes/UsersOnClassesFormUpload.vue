@@ -11,6 +11,8 @@ const emit = defineEmits<{
   submit: [file: File]
 }>()
 
+const {$i18n} = useNuxtApp()
+
 const state = reactive<UploadStudentsDto>({
   sheet: undefined,
 })
@@ -19,7 +21,7 @@ function validate(state: UploadStudentsDto): FormError[] {
   const errors = []
 
   if (!state.sheet)
-    errors.push({ path: 'sheet', message: 'Please upload file.' })
+    errors.push({ path: 'sheet', message: $i18n.t('class.students.uploadStudentsModal.error') })
 
   return errors
 }
@@ -47,21 +49,21 @@ function onSubmit(event: FormSubmitEvent<any>) {
     @submit="onSubmit"
   >
     <UFormGroup
-      label="Student Sheet"
+      :label="$i18n.t('class.students.uploadStudentsModal.label')"
       name="sheet"
-      help="Only excel file is allowed."
+      :help="$i18n.t('class.students.uploadStudentsModal.helper')"
     >
       <UInput type="file" @change="onFileChange" />
     </UFormGroup>
 
     <div class="flex justify-end gap-3">
       <UButton
-        label="Cancel"
+        :label="$i18n.t('class.students.uploadStudentsModal.cancel')"
         color="gray"
         variant="ghost"
         @click="emit('close')"
       />
-      <UButton :loading="loading" type="submit" label="Save" color="black" />
+      <UButton :loading="loading" type="submit" :label="$i18n.t('class.students.uploadStudentsModal.save')" color="black" />
     </div>
   </UForm>
 </template>

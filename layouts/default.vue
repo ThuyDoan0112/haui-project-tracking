@@ -1,67 +1,54 @@
 <script setup lang="ts">
-const title = 'HaUI Project Tracking'
-
 const authStore = useAuthStore()
 const { user, isAdmin } = storeToRefs(authStore)
+
+const { $i18n } = useNuxtApp()
+const title = computed(() => $i18n.t('sidebar.title'))
 
 const links = computed(() => {
   return [
     {
       id: 'home',
-      label: 'Home',
+      label: $i18n.t('sidebar.item.home'),
       icon: 'i-heroicons-home',
       to: '/',
-      tooltip: {
-        text: 'Home',
-        shortcuts: ['G', 'H'],
-      },
     },
     ...(isAdmin.value
       ? [
           {
             id: 'admin',
-            label: 'Dashboard',
+            label: $i18n.t('sidebar.item.dashboard'),
             to: '/admin',
             icon: 'i-heroicons-cog-8-tooth',
             children: [
               {
-                label: 'Users',
+                label: $i18n.t('sidebar.item.users'),
                 to: '/admin/users',
                 exact: true,
               },
               {
-                label: 'Classes',
+                label: $i18n.t('sidebar.item.classes'),
                 to: '/admin/classes',
                 exact: true,
               },
               {
-                label: 'Documents',
+                label: $i18n.t('sidebar.item.documents'),
                 to: '/admin/documents',
                 exact: true,
               },
             ],
-            tooltip: {
-              text: 'Dashboard',
-              shortcuts: ['G', 'D'],
-            },
           },
         ]
       : []),
   ]
 })
 
-const groups = computed(() => {
-  return [
-    {
-      key: 'links',
-      label: 'Go to',
-      commands: links.value.map(link => ({
-        ...link,
-        shortcuts: link.tooltip?.shortcuts,
-      })),
-    },
-  ]
-})
+const locales = ref([
+  { value: 'en', label: 'English' },
+  { value: 'vi', label: 'Vietnamese' },
+])
+
+const { locale } = useI18n()
 </script>
 
 <template>
@@ -79,13 +66,15 @@ const groups = computed(() => {
       </UDashboardNavbar>
       <UDivider class="sticky top-0" />
       <UDashboardSidebar>
-        <template #header>
-          <UDashboardSearchButton />
-        </template>
-
         <UDashboardSidebarLinks :links="links" />
 
         <UDivider class="sticky bottom-0" />
+
+        <USelect v-model="locale" :options="locales" >
+          <template #leading>
+            <UIcon name="i-heroicons-language" class="w-5 h-5" />
+          </template>
+        </USelect>
 
         <template #footer>
           <UserDropdown v-if="user" :user="user" @logout="authStore.logout" />
@@ -94,9 +83,5 @@ const groups = computed(() => {
     </UDashboardPanel>
 
     <slot />
-
-    <ClientOnly>
-      <LazyUDashboardSearch :groups="groups" />
-    </ClientOnly>
   </UDashboardLayout>
 </template>

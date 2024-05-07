@@ -9,6 +9,8 @@ const emit = defineEmits<{
   logout: []
 }>()
 
+const { $i18n } = useNuxtApp()
+
 const items = computed(() => [
   [
     {
@@ -19,7 +21,7 @@ const items = computed(() => [
   ],
   [
     {
-      label: 'Sign out',
+      label: $i18n.t('sidebar.userDropdown.item.logout'),
       icon: 'i-heroicons-arrow-left-on-rectangle',
       click() {
         emit('logout')
@@ -57,7 +59,7 @@ const items = computed(() => [
 
     <template #account>
       <div class="text-left">
-        <p>Signed in as</p>
+        <p>{{ $t('sidebar.userDropdown.text.login') }}</p>
         <p class="truncate font-medium text-gray-900 dark:text-white">
           {{ user.email }}
         </p>

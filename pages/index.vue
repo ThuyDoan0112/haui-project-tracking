@@ -23,12 +23,12 @@ const isTeacher = (myClass: any) => myClass.teacherId === user.value!.id
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar title="My Classes" :badge="myClasses?.length" />
+      <UDashboardNavbar :title="$t('home.title')" :badge="myClasses?.length" />
 
       <UDashboardPanelContent class="pb-24">
         <UAlert
           v-if="!myClasses.length"
-          title="You don't have any classes yet!"
+          :title="$t('home.message')"
           color="amber"
         />
         <template v-else>

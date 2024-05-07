@@ -1,19 +1,21 @@
 <script setup lang="ts">
+const { $i18n } = useNuxtApp()
+
 const columns = [
   {
     key: 'user.name',
-    label: 'Name',
+    label: $i18n.t('class.students.name'),
   },
   {
     key: 'user.email',
-    label: 'Email',
+    label: $i18n.t('class.students.email'),
   },
   {
     key: 'user.studentCode',
-    label: 'Student Code',
+    label: $i18n.t('class.students.studentCode'),
   },
   {
-    label: 'Project',
+    label: $i18n.t('class.students.project'),
     key: 'project',
   },
 ]
@@ -65,13 +67,13 @@ async function handleCreateReports(data: any) {
   if (count) {
     closeCreateReportsModal()
     toast.add({
-      title: 'Create reports successfully',
+      title: $i18n.t('class.students.message'),
     })
   }
 }
 
 function useUploadStudentsModal() {
-  const importStudentModalTitle = 'Upload Students'
+  const importStudentModalTitle = $i18n.t('class.students.uploadStudentsModal.title')
   const isVisibleUploadStudentsModal = ref(false)
 
   const openUploadStudentsModal = () => {
@@ -98,7 +100,7 @@ const {
 } = useCreateReportModal()
 
 function useCreateReportModal() {
-  const createReportsModalTitle = 'Create Reports'
+  const createReportsModalTitle = $i18n.t('class.students.createReportModal.title')
   const isVisibleCreateReportsModal = ref(false)
 
   const openCreateReportsModal = () => {
@@ -121,18 +123,18 @@ function useCreateReportModal() {
 <template>
   <UDashboardPanelContent class="pb-12">
     <UDashboardSection
-      title="Class Students"
-      :description="`${usersOnClasses?.length} students.`"
+      :title="$t('class.students.title')"
+      :description="`${usersOnClasses?.length} ${$t('class.students.description')}`"
       :ui="{ wrapper: '*:pt-0' }"
       :links="[
         {
-          label: `Reports`,
+          label: $t('class.students.report'),
           color: 'primary',
           icon: 'i-heroicons-plus',
           click: openCreateReportsModal,
         },
         {
-          label: `Students`,
+          label: $t('class.students.description'),
           color: 'gray',
           icon: 'i-heroicons-arrow-up-on-square',
           click: openUploadStudentsModal,

@@ -5,6 +5,8 @@ definePageMeta({
 
 const route = useRoute()
 
+const { $i18n } = useNuxtApp()
+
 const classesStore = useClassesStore()
 const { fetchClass } = classesStore
 const { classDetail } = storeToRefs(classesStore)
@@ -20,13 +22,13 @@ const links = computed(() => {
     //   exact: true,
     // },
     {
-      label: 'Students',
+      label: $i18n.t('class.tab.students'),
       icon: 'i-heroicons-user-group',
       to: `/classes/${route.params.id}/students`,
       exact: true,
     },
     {
-      label: 'Documents',
+      label: $i18n.t('class.tab.documents'),
       icon: 'i-heroicons-document-text',
       to: `/classes/${route.params.id}/documents`,
       exact: true,
