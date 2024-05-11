@@ -104,7 +104,7 @@ async function handleCreateTask(reportId: number, data: any) {
         </UAlert>
 
         <UDivider v-if="!isTeacher" class="my-4"/>
-        <TasksForm v-if="!isTeacher" :init-values="selectedTask" :loading="isLoading" @submit="(data) => selectedTask ? handleUpdateTask(selectedTask.id, data) : handleCreateTask(item.id, data)"/>
+        <TasksForm v-if="!isTeacher" :init-values="selectedTask" :loading="isLoading" @submit="(data) => selectedTask ? handleUpdateTask(selectedTask.id, {...data}) : handleCreateTask(item.id, {...data})"/>
         
           <UDivider class="my-4"/>
 
