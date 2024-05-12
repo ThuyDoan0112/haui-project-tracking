@@ -18,6 +18,10 @@ const columns = [
     label: $i18n.t('class.students.project'),
     key: 'project',
   },
+  {
+    label: $i18n.t('class.students.progress'),
+    key: 'progress',
+  },
 ]
 
 const {
@@ -32,6 +36,22 @@ const isLoading = ref(false)
 const usersOnClassesStore = useUsersOnClassesStore()
 const { usersOnClasses } = storeToRefs(usersOnClassesStore)
 const { fetchUsersOnClasses } = usersOnClassesStore
+
+const rows = computed(() => {
+  return usersOnClasses.value.map((userOnClass: any) => {
+    const taskCount = userOnClass.project.reports.reduce((acc: number, report: any) => {
+      return acc + report.tasks.length
+    }, 0)
+
+    const doneTaskCount = userOnClass.project.reports.reduce((acc: number, report: any) => {
+      return acc + report.tasks.filter((task: any) => task.isCompleted).length
+    }, 0)
+    return {
+      ...userOnClass,
+      progress: `${doneTaskCount}/${taskCount}`,
+    }
+  })
+})
 
 await fetchUsersOnClasses(+route.params.id)
 
@@ -142,7 +162,7 @@ function useCreateReportModal() {
       ]"
     >
       <UTable
-        :rows="usersOnClasses"
+        :rows="rows"
         :columns="columns"
         :empty-state="{
           icon: 'i-heroicons-circle-stack-20-solid',
@@ -156,6 +176,9 @@ function useCreateReportModal() {
           <NuxtLink class="underline text-primary font-semibold" :to="`/projects/${row.project.id}?classId=${row.classId}`">
             {{ row.project.name }}
           </NuxtLink>
+        </template>
+        <template #progress-data="{ row }">
+          <UBadge> {{ row.progress }}</UBadge>
         </template>
       </UTable>
 

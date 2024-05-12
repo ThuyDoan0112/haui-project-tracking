@@ -56,6 +56,7 @@ export default defineI18nConfig(() => ({
           project: 'Project',
           report: 'Report',
           message: 'Create reports successfully',
+          progress: 'Progress',
           uploadStudentsModal: {
             title: 'Add students and projects',
             label: 'File',
@@ -129,6 +130,7 @@ export default defineI18nConfig(() => ({
           project: 'Đề tài',
           report: 'Báo cáo',
           message: 'Tạo báo cáo thành công',
+          progress: 'Tiến độ',
           uploadStudentsModal: {
             title: 'Thêm sinh viên và đồ án',
             label: 'File',
