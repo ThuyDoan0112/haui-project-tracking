@@ -75,6 +75,25 @@ export default defineI18nConfig(() => ({
             save: 'Save',
           }
         }
+      },
+      dashboard: {
+        users: {
+          title: 'Users',
+          name: 'Name',
+          email: 'Email',
+          role: 'Role',
+          message: 'Create user successfully',
+          createModal: {
+            title: 'Create new user',
+            name: 'Name',
+            email: 'Email',
+            password: 'Password',
+            role: 'Role',
+            cancel: 'Cancel',
+            save: 'Save',
+            required: 'This field is required'
+          },
+        }
       }
     },
     vi: {
@@ -148,6 +167,25 @@ export default defineI18nConfig(() => ({
             cancel: 'Hủy',
             save: 'Lưu',
           }
+        }
+      },
+      dashboard: {
+        users: {
+          title: 'Quản lý người dùng',
+          name: 'Họ Tên',
+          email: 'Email',
+          role: 'Quyền',
+          message: 'Thêm người dùng thành công',
+          createModal: {
+            title: 'Thêm mới người dùng',
+            name: 'Tên',
+            email: 'Email',
+            password: 'Mật khẩu',
+            role: 'Quyền',
+            cancel: 'Hủy',
+            save: 'Lưu',
+            required: 'Trường này không được để trống'
+          },
         }
       }
     }

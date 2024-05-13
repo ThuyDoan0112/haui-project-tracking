@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import type { CreateUserDto } from '~/types'
 
+const { $i18n } = useNuxtApp()
+
 const { users, isLoading, columns, handleFetchUsers } = useUsersTable()
 
 await handleFetchUsers()
+
 
 function useUsersTable() {
   const isLoading = ref(false)
@@ -21,19 +24,19 @@ function useUsersTable() {
   const columns = [
     {
       key: 'id',
-      label: '#',
+      label: 'ID',
     },
     {
       key: 'name',
-      label: 'Name',
+      label: $i18n.t('dashboard.users.name'),
     },
     {
       key: 'email',
-      label: 'Email',
+      label: $i18n.t('dashboard.users.email'),
     },
     {
       key: 'role',
-      label: 'Role',
+      label: $i18n.t('dashboard.users.role'),
     },
   ]
 
@@ -48,7 +51,6 @@ function useUsersTable() {
 const {
   isVisible: isVisibleCreateUserModal,
   title: createUserModalTitle,
-  description: createUserModalDescription,
   openModal: openCreateUserModal,
   closeModal: closeCreateUserModal,
   isLoading: isCreatingUser,
@@ -56,8 +58,7 @@ const {
 } = useCreateUserModal()
 
 function useCreateUserModal() {
-  const title = 'New user'
-  const description = 'Add a new user to your database'
+  const title = $i18n.t('dashboard.users.createModal.title')
   const isVisible = ref(false)
   const isLoading = ref(false)
 
@@ -84,7 +85,6 @@ function useCreateUserModal() {
 
   return {
     title,
-    description,
     isVisible,
     isLoading,
     openModal,
@@ -96,10 +96,10 @@ function useCreateUserModal() {
 
 <template>
   <UDashboardPanel grow>
-    <UDashboardNavbar title="Users" :badge="users.length">
+    <UDashboardNavbar :title="$t('dashboard.users.title')" :badge="users.length">
       <template #right>
         <UButton
-          label="New user"
+          :label="$t('dashboard.users.createModal.title')"
           trailing-icon="i-heroicons-plus"
           color="gray"
           @click="openCreateUserModal"
@@ -138,7 +138,6 @@ function useCreateUserModal() {
     <UDashboardModal
       v-model="isVisibleCreateUserModal"
       :title="createUserModalTitle"
-      :description="createUserModalDescription"
       :ui="{ width: 'sm:max-w-md' }"
     >
       <UsersForm
