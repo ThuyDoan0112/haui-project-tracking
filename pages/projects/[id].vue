@@ -34,6 +34,12 @@ const links = computed(() => {
       to: `/projects/${route.params.id}/documents?classId=${route.query.classId}`,
       exact: true,
     },
+    {
+      label: 'Timeline',
+      icon: 'i-heroicons-chart-bar',
+      to: `/projects/${route.params.id}/timeline?classId=${route.query.classId}`,
+      exact: true,
+    },
   ]
 })
 </script>
