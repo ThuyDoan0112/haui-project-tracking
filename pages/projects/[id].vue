@@ -9,9 +9,23 @@ const projectsStore = useProjectStore()
 const { project } = storeToRefs(projectsStore)
 
 const classStore = useClassesStore();
-const { isTeacher } = storeToRefs(classStore);
+const { isTeacher, classDetail } = storeToRefs(classStore);
 
 await projectsStore.fetchProject(+route.params.id)
+await classStore.fetchClass(+useRoute().query.classId)
+
+const breadcrumbs = computed(() => {
+  return [
+    {
+      label: classDetail.value?.name,
+      to: `/classes/${classDetail.value?.id}/students`,
+    },
+    {
+      label: project.value?.name,
+      to: `/projects/${route.params.id}?classId=${route.query.classId}`
+    },
+  ]
+})
 
 const links = computed(() => {
   return [
@@ -47,7 +61,13 @@ const links = computed(() => {
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar :title="project?.name" />
+      <UDashboardNavbar >
+
+        <template #title>
+          <span v-if="!isTeacher">{{ project?.name }}</span>
+          <UBreadcrumb v-else :links="breadcrumbs" />
+        </template>
+      </UDashboardNavbar>
 
       <UDashboardToolbar class="py-0 px-1.5 overflow-x-auto">
         <UHorizontalNavigation :links="links" />
