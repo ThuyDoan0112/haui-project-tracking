@@ -27,12 +27,7 @@ function validate(state: UploadStudentsDto): FormError[] {
 }
 
 function onFileChange(event: InputEvent) {
-  const target = event.target as HTMLInputElement
-  const file = target.files[0]
-
-  if (!file)
-    return
-  state.sheet = file
+  state.sheet = event
 }
 
 function onSubmit(event: FormSubmitEvent<any>) {
