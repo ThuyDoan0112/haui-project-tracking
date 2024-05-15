@@ -27,7 +27,7 @@ function validate(state: UploadStudentsDto): FormError[] {
 }
 
 function onFileChange(event: InputEvent) {
-  state.sheet = event
+  state.sheet = event[0]
 }
 
 function onSubmit(event: FormSubmitEvent<any>) {
