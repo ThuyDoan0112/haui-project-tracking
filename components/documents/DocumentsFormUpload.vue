@@ -33,12 +33,7 @@ function validate(state: UploadDocumentDto): FormError[] {
 }
 
 function onFilesChange(event: InputEvent) {
-  const target = event.target as HTMLInputElement
-  const files = target.files
-
-  if (!files?.length)
-    return
-  state.documents = files as FileList
+  state.documents = event
 }
 
 function onSubmit(event: FormSubmitEvent<any>) {
