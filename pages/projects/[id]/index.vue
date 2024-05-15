@@ -26,6 +26,7 @@ const reportItems = computed(() => {
       icon: "i-heroicons-document-text",
       tasks: report.tasks,
       comment: report.comment,
+      dueDate: report.dueDate,
     };
   });
 });
