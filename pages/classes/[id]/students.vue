@@ -68,6 +68,7 @@ async function handleUploadStudents(file: File) {
   )
   isLoading.value = false
 
+  await fetchUsersOnClasses(+route.params.id)
   closeUploadStudentsModal()
 }
 
