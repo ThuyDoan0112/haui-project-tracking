@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { FormError, FormSubmitEvent } from "#ui/types";
 import { format } from "date-fns";
 
 const reportsStore = useReportsStore();
@@ -22,7 +21,7 @@ const reportItems = computed(() => {
     return {
       id: report.id,
       label: `${report.name} (${format(new Date(report.startDate), 'yyyy/MM/dd')} - ${format(new Date(report.dueDate), 'yyyy/MM/dd')}) (${report.tasks.filter((task) => task.isCompleted).length}/${report.tasks.length} tasks completed)`,
-      content: report.description || "No description",
+      content: report.description,
       icon: "i-heroicons-document-text",
       tasks: report.tasks,
       comment: report.comment,
@@ -31,10 +30,17 @@ const reportItems = computed(() => {
   });
 });
 
-const selectedTask = ref()
+const init = () => {
+  const map = {}
+  for (const report of reports.value) {
+    map[report.id] = undefined
+  }
+  return map
+}
+const selectedTask = reactive(init())
 
-const setSelectedTask = (task: any) => {
-  selectedTask.value = task;
+const setSelectedTask = (reportId: number,task: any) => {
+  selectedTask[reportId] = task;
 };
 
 const { createTask, updateTask } = useTasksStore();
@@ -50,10 +56,10 @@ const handleCommentReport = async (reportId: number, data: any) => {
   })
 };
 
-async function handleUpdateTask(taskId: number, data: any) {
+async function handleUpdateTask(reportId: number, taskId: number, data: any) {
   await updateTask(taskId, data);
   await fetchReports(+projectId.value);
-  selectedTask.value = undefined
+  selectedTask[reportId] = undefined
 }
 
 const isLoading = ref(false);
@@ -80,7 +86,7 @@ async function handleCreateTask(reportId: number, data: any) {
             !isTeacher && {
               variant: 'solid',
               icon: 'i-heroicons-pencil-square',
-              onClick: () => setSelectedTask(task),
+              onClick: () => setSelectedTask(item.id, task),
             },
             {
               variant: 'solid',
@@ -91,7 +97,7 @@ async function handleCreateTask(reportId: number, data: any) {
               onClick: () => {
                 const isOverDueDate = new Date(item.dueDate) < new Date();
                 if(isTeacher || isOverDueDate) return;
-                handleUpdateTask(task.id, { isCompleted: !task.isCompleted })
+                handleUpdateTask(item.id, task.id, { isCompleted: !task.isCompleted })
               },
             },
           ]"
@@ -105,13 +111,10 @@ async function handleCreateTask(reportId: number, data: any) {
               <span v-if="task.description">{{ task.description }}</span>
             </template>
         </UAlert>
-
         <UDivider v-if="!isTeacher" class="my-4"/>
-        <TasksForm v-if="!isTeacher" :init-values="selectedTask" :loading="isLoading" @submit="(data) => selectedTask ? handleUpdateTask(selectedTask.id, {...data}) : handleCreateTask(item.id, {...data})"/>
-        
-          <UDivider class="my-4"/>
-
-        <ReportsComment :is-teacher="isTeacher" :comment="item.comment" @submit="(comment) => handleCommentReport(item.id, comment)"/>
+        <TasksForm :key="item.id" v-if="!isTeacher" :init-values="selectedTask[item.id]" :loading="isLoading" @submit="(data) => selectedTask ? handleUpdateTask(item.id,selectedTask[item.id].id, {...data}) : handleCreateTask(item.id, {...data})"/>
+        <UDivider class="my-4"/>
+        <ReportsComment :key="item.id" :is-teacher="isTeacher" :comment="item.comment" @submit="(comment) => handleCommentReport(item.id, comment)"/>
       </template>
     </UAccordion>
   </UDashboardPanelContent>

@@ -94,6 +94,12 @@ export default defineI18nConfig(() => ({
             required: 'This field is required'
           },
         }
+      },
+      project: {
+        report: 'Reports',
+        source: 'Sources',
+        document: 'Documents',
+        timeline: 'Timeline',
       }
     },
     vi: {
@@ -187,6 +193,12 @@ export default defineI18nConfig(() => ({
             required: 'Trường này không được để trống'
           },
         }
+      },
+      project: {
+        report: 'Báo cáo',
+        source: 'Kết qủa',
+        document: 'Tài liệu',
+        timeline: 'Tiến độ',
       }
     }
   }
