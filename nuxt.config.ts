@@ -16,5 +16,10 @@ export default defineNuxtConfig({
   },
   i18n: {
     vueI18n: './i18n.config.ts'
+  },
+  routeRules: {
+    '/api/**': {
+      proxy: `${process.env.API_BASE_URL}/api/v1/**`
+    }
   }
 })

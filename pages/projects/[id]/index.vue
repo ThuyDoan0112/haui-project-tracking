@@ -96,7 +96,7 @@ async function handleCreateTask(reportId: number, data: any) {
               label: `${task.isCompleted ? 'Completed' : 'Mark as Completed'}`,
               icon: `${task.isCompleted ? 'i-heroicons-check' : ''}`,
               color: `${task.isCompleted ? 'green' : 'orange'}`,
-              disabled: `${isTeacher || new Date(item.dueDate) < new Date()}`,
+              disabled: isTeacher || new Date(item.dueDate) < new Date(),
               onClick: () => {
                 const isOverDueDate = new Date(item.dueDate) < new Date();
                 if (isTeacher || isOverDueDate) return;
