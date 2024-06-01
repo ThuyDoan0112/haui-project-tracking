@@ -100,6 +100,9 @@ export default defineI18nConfig(() => ({
         source: 'Sources',
         document: 'Documents',
         timeline: 'Timeline',
+      },
+      projectSource: {
+        title: 'Project Source',
       }
     },
     vi: {
@@ -199,6 +202,9 @@ export default defineI18nConfig(() => ({
         source: 'Kết qủa',
         document: 'Tài liệu',
         timeline: 'Tiến độ',
+      },
+      projectSource: {
+        title: 'Danh sách mã nguồn và báo cáo',
       }
     }
   }

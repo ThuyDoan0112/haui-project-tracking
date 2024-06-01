@@ -1,39 +1,39 @@
 <script setup lang="ts">
-import type { FormError, FormSubmitEvent } from '#ui/types'
+import type { FormError, FormSubmitEvent } from "#ui/types";
 
 const props = defineProps<{
-  initValues?: any
-  loading: boolean
-}>()
+  initValues?: any;
+  loading: boolean;
+}>();
 
 const emit = defineEmits<{
-  submit: [data: any]
-}>()
+  submit: [data: any];
+}>();
 
 const state = reactive({
-  name: props.initValues?.name || undefined, 
+  name: props.initValues?.name || undefined,
   description: props.initValues?.description || undefined,
-})
+});
 watchEffect(() => {
-  state.name = props.initValues?.name || undefined
-  state.description = props.initValues?.description || undefined
-})
+  state.name = props.initValues?.name || undefined;
+  state.description = props.initValues?.description || undefined;
+});
 
 function validate(state: any): FormError[] {
-  const errors = []
+  const errors = [];
 
   if (!state.name)
-    errors.push({ path: 'name', message: 'Please enter a name.' })
+    errors.push({ path: "name", message: "Please enter a name." });
 
-  return errors
+  return errors;
 }
 
 function onSubmit(event: FormSubmitEvent<any>) {
-  emit('submit', event.data)
+  emit("submit", event.data);
 
   // Reset the form
-  state.name = undefined
-  state.description = undefined
+  state.name = undefined;
+  state.description = undefined;
 }
 </script>
 
@@ -42,25 +42,16 @@ function onSubmit(event: FormSubmitEvent<any>) {
     :validate="validate"
     :validate-on="['submit']"
     :state="state"
-    class="space-y-4 flex items-end gap-4"
+    class="flex items-end gap-4"
     @submit="onSubmit"
   >
     <UFormGroup label="Task" name="name" class="w-1/2">
-      <UInput
-        v-model="state.name"
-        autofocus
-      />
+      <UInput v-model="state.name" autofocus />
     </UFormGroup>
     <UFormGroup label="Output" name="description" class="w-1/2">
-      <UInput
-        v-model="state.description"
-        autofocus
-      />
+      <UInput v-model="state.description" autofocus />
     </UFormGroup>
 
-    <UButton
-      label="Save"
-      type="submit"
-    />
+    <UButton label="Save" type="submit" />
   </UForm>
 </template>
