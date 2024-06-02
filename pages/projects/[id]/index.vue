@@ -74,6 +74,17 @@ async function handleCreateTask(reportId: number, data: any) {
   isLoading.value = true;
   await createTask(reportId, data).finally(() => (isLoading.value = false));
 }
+
+const isOverDueDate = (date) => {
+  const today = new Date();
+  const dueDate = new Date(date);
+
+  return (
+    today.getFullYear() > dueDate.getFullYear() ||
+    today.getMonth() > dueDate.getMonth() ||
+    today.getDay() > dueDate.getDay()
+  );
+};
 </script>
 
 <template>
@@ -96,10 +107,9 @@ async function handleCreateTask(reportId: number, data: any) {
               label: `${task.isCompleted ? 'Completed' : 'Mark as Completed'}`,
               icon: `${task.isCompleted ? 'i-heroicons-check' : ''}`,
               color: `${task.isCompleted ? 'green' : 'orange'}`,
-              disabled: isTeacher || new Date(item.dueDate) < new Date(),
+              disabled: isTeacher || isOverDueDate(item.dueDate),
               onClick: () => {
-                const isOverDueDate = new Date(item.dueDate) < new Date();
-                if (isTeacher || isOverDueDate) return;
+                if (isTeacher || isOverDueDate(item.dueDate)) return;
                 handleUpdateTask(item.id, task.id, {
                   isCompleted: !task.isCompleted,
                 });
